@@ -13,13 +13,6 @@ var routes = require('./routes/index');
 var app = express();
 
 // view engine setup
-hbs.constructor.prototype.registerPartial = function( name, source ) {
-  console.log( name, source );
-  console.log( typeof source );
-  source = source.replace(/{{/g, '\\{{');
-  this.handlebars.registerPartial(name, this.compile(source));
-};
-
 app.engine( 'hbs', hbs.express3({
   defaultLayout: 'views/layout',
   partialsDir: [

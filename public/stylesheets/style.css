@@ -1,6 +1,24 @@
+html, body {
+  margin: 0px;
+  padding: 0px;
+  height: 100%; }
+
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+
+#super-container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  min-width: 900px;
+  min-height: 500px;
+  overflow: hidden; }
+
+#app {
+  position: absolute;
+  z-index: 10; }
 
 a {
   color: #00B7FF; }

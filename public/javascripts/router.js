@@ -1,5 +1,5 @@
 // views ----------------------------------------------------------------------
-var appView = new AppView();
+var appLayout = new AppLayout();
 
 // routes ---------------------------------------------------------------------
 var Router = Backbone.Router.extend({
@@ -10,7 +10,7 @@ var Router = Backbone.Router.extend({
 
 var router = new Router();
 router.on('route:home', function() {
-  appView.render();
+  appLayout.render();
 });
 
 Backbone.history.start();

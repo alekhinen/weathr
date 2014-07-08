@@ -1,12 +1,18 @@
 <div id="app"></div>
 
 {{!-- templates ---------------------------------------------------------- --}}
+{{> app-view-template}}
+{{> location-view-template}}
 
 {{!-- javascripts -------------------------------------------------------- --}}
+<script src="svg.js"></script>
 <script src="jquery-2.1.1.js"></script>
 <script src="underscore.js"></script>
 <script src="backbone.js"></script>
-<script src="svg.js"></script>
+<script src="backbone.layoutmanager.js"></script>
 
-<script src="javascripts/views/appView.js"></script>
+<script src="javascripts/config.js"></script>
+
+<script src="javascripts/views/locationView.js"></script>
+<script src="javascripts/layoutmanagers/appLayout.js"></script>
 <script src="javascripts/router.js"></script>
