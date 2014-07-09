@@ -15,12 +15,12 @@
     "express-hbs": "^0.7.10"
   },
   "devDependencies": {
+    "forecast.io": "0.0.9",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
-    "load-grunt-tasks": "^0.4.0",
-    "grunt": "^0.4.5",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-lintspaces": "^0.5.1",
-    "grunt-sass": "^0.14.0"
+    "grunt-sass": "^0.14.0",
+    "load-grunt-tasks": "^0.4.0"
   }
 }

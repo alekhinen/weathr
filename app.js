@@ -8,7 +8,8 @@ var bodyParser   = require('body-parser');
 var hbs          = require('express-hbs');
 
 // routes ---------------------------------------------------------------------
-var routes = require('./routes/index');
+var routes  = require('./routes/index');
+var weather = require('./routes/weather');
 
 var app = express();
 
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'lib')));
 
 app.use('/', routes);
+app.use('/weather', weather);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
