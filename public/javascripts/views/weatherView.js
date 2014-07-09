@@ -1,6 +1,6 @@
 var WeatherView = Backbone.View.extend({
 
-  el: '#app',
+  // el: '#app',
   template: _.template($('#weather-view-template').html()),
 
   events: {
@@ -24,12 +24,13 @@ var WeatherView = Backbone.View.extend({
         self.model.set(data);
         self.render();
 
-        setInterval(self.updateTime, 1000);
+        self.timer = setInterval(self.updateTime, 1000);
       }
     });
   },
 
   render: function() {
+    console.log('hitting the weather render');
     var s1, s2, s3;
 
     window.draw = SVG('super-container').size('100%', '100%');
@@ -38,7 +39,6 @@ var WeatherView = Backbone.View.extend({
       s2 = stop.at(0.4, '#872736');
       s3 = stop.at(1, '#1d1e65');
     });
-    // gradient.from(0, 0).to(0, 1).radius(1);
     window.rect = draw.rect('200%', '200%').attr({
       fill: gradient
     });
@@ -47,8 +47,15 @@ var WeatherView = Backbone.View.extend({
   },
 
   updateTime: function() {
+    self.model.set('currentTime', moment().local() );
     var m = moment().local().format('h:mm:ss A');
     $('.current-time')[0].innerHTML = m;
+  },
+
+  remove: function() {
+    clearInterval( this.timer );
+    console.log( 'asdfadfs' );
+    return Backbone.View.prototype.remove.call( this );
   }
 
 });

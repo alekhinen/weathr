@@ -1,14 +1,15 @@
 var express  = require('express');
 var router   = express.Router();
 var Forecast = require('forecast.io');
+var config   = require('../config');
 
 var options = {
-  APIKey: '56359165e622c2711b40cee3bec02d73',
+  APIKey: process.env.FORECAST_API_KEY,
   timeout: 1000
 },
 forecast = new Forecast(options);
 
-// GET weather/:city
+// GET weather/lat/:lat/long/:lng
 router.get('/lat/:lat/long/:lng', function(req, res) {
   var rp = req.params,
     lat = rp.lat,

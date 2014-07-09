@@ -20,6 +20,7 @@ router.on('route:index', function() {
   }
 
   indexView = new IndexView();
+  indexView.$el.appendTo('#app');
   currentView = indexView;
   indexView.render();
 });
@@ -37,9 +38,9 @@ router.on('route:weather', function( lat, lng ) {
   weatherView = new WeatherView({
     model: weatherModel
   });
+  weatherView.$el.appendTo('#app');
   console.log( weatherView );
   currentView = weatherView;
-  weatherView.initialize();
 });
 
 Backbone.history.start();

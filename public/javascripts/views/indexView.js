@@ -1,6 +1,6 @@
 var IndexView = Backbone.View.extend({
 
-  el: '#app',
+  // el: '#app',
   template: _.template($('#index-view-template').html()),
 
   events: {
@@ -60,18 +60,29 @@ var IndexView = Backbone.View.extend({
     ajaxURL  = 'https://maps.googleapis.com/maps/api/geocode/json?address=',
     location = $('#location')[0].value.replace( ' ', '+' ),
     ajaxURL += location,
-    ajaxURL += '&key=AIzaSyDsoiGdxsSykpanHXRRsqfCsF4xwUKkgQQ';
+    ajaxURL += '&key=...';
     console.log('submitting location...');
 
+    // $.ajax({
+    //   url: ajaxURL,
+    //   type: 'GET',
+    //   success: function( data, status, jqXHR ) {
+    //     var dLat = data.results[0].geometry.location.lat,
+    //       dLong  = data.results[0].geometry.location.lng,
+    //       newLoc = '#weather/lat/' + dLat + '/long/' + dLong ;
+    //     console.log( newLoc );
+    //     window.location.hash = newLoc;
+    //   },
+    //   error: function( jqXHR, textStatus, errorThrown ) {
+    //     console.log( textStatus, errorThrown );
+    //   }
+    // });
+
     $.ajax({
-      url: ajaxURL,
+      url: '/geocode/address/' + location,
       type: 'GET',
       success: function( data, status, jqXHR ) {
-        var dLat = data.results[0].geometry.location.lat,
-          dLong  = data.results[0].geometry.location.lng,
-          newLoc = '#weather/lat/' + dLat + '/long/' + dLong ;
-        console.log( newLoc );
-        window.location.hash = newLoc;
+        console.log('wowwww');
       },
       error: function( jqXHR, textStatus, errorThrown ) {
         console.log( textStatus, errorThrown );
