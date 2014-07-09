@@ -26,22 +26,6 @@ body {
 a {
   color: #00B7FF; }
 
-#weather {
-  position: relative;
-  width: 100%;
-  height: 100%; }
-  #weather .center-content {
-    position: relative;
-    margin: auto;
-    width: 300px;
-    height: 60px;
-    top: 50%;
-    margin-top: -120px; }
-
-.current-time {
-  font-size: 50px;
-  font-weight: 100; }
-
 #index-location-search {
   width: 300px;
   height: 160px;
@@ -60,6 +44,50 @@ a {
     margin-right: 10px; }
   #index-location-search button {
     float: right; }
+
+#weather {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px; }
+  #weather .center-content {
+    position: relative;
+    margin: auto;
+    width: 300px;
+    height: 60px;
+    top: 50%;
+    margin-top: -30px; }
+  #weather .bottom-left {
+    position: absolute;
+    bottom: 0px;
+    left: 10px; }
+
+.current-time {
+  font-size: 50px;
+  font-weight: 100; }
+
+.current-content {
+  position: relative; }
+  .current-content .current-weather-summary {
+    float: left;
+    margin-top: 46px;
+    margin-left: 10px; }
+  .current-content .weather-summary span {
+    display: inline-block; }
+
+.current-temp {
+  float: left;
+  font-weight: 100;
+  font-size: 60px; }
+  .current-temp span {
+    margin-left: -14px;
+    top: -20px;
+    position: relative;
+    font-size: 30px;
+    font-weight: 400; }
 
 .step:hover i {
   opacity: 0.3; }
@@ -107,3 +135,46 @@ a {
 .size-96 {
   font-size: 96px;
   width: 96px; }
+
+.clear-day, .clear-night, .rain, .snow, .sleet, .wind, .fog, .cloudy, .partly-cloudy-day, .partly-cloudy-night {
+  display: inline-block;
+  font-family: "Ionicons";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: auto;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+.clear-day:before {
+  content: "\f1e4"; }
+
+.clear-night:before {
+  content: "\f1b2"; }
+
+.rain:before {
+  content: "\f2b7"; }
+
+.snow:before {
+  content: "\f309"; }
+
+.sleet:before {
+  content: "\f1cf"; }
+
+.wind:before {
+  content: "\f1cf"; }
+
+.fog:before {
+  content: "\f1cf"; }
+
+.cloudy:before {
+  content: "\f12b"; }
+
+.partly-cloudy-day:before {
+  content: "\f1bc"; }
+
+.partly-cloudy-night:before {
+  content: "\f308"; }

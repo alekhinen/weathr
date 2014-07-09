@@ -1,6 +1,5 @@
 <script type="template" id="weather-view-template">
   <section id="weather">
-    <h1>This is the weather view</h1>
 
     <div class="center-content">
       <div style="float:left;">
@@ -13,5 +12,26 @@
       </div>
       <h1 class="current-time"></h1>
     </div>
+
+    <div class="bottom-left">
+      <div class="current-content">
+
+        <h1 class="current-temp">
+          <%= currently.temperature %>
+          <span>&deg; F</span>
+        </h1>
+
+        <div class="current-weather-summary">
+          <p class="weather-summary">
+            <span class="step size-32">
+              <i class="icon <%= currently.icon %>"></i>
+            </span>
+            <%= currently.summary %>
+          </p>
+        </div>
+
+      </div>
+    </div>
+
   </section>
 </script>
