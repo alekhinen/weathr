@@ -39,6 +39,7 @@ router.on('route:weather', function( address ) {
   });
 
   weatherView.$el.appendTo('#app');
+  weatherView.render();
   currentView = weatherView;
 });
 

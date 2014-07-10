@@ -4,7 +4,7 @@ var WeatherView = Backbone.View.extend({
   template: _.template($('#weather-view-template').html()),
 
   events: {
-    'submit #index-location-search': 'submitLocation'
+    'submit #location-search': 'submitLocation'
   },
 
   initialize: function() {
@@ -153,7 +153,7 @@ var WeatherView = Backbone.View.extend({
     var forecast = this.model.get('weather').daily.data;
 
     _.each( forecast, function( f ) {
-      var time, maxTemp, minTemp, icon, date, highLow, appendee;
+      var time, maxTemp, minTemp, icon, date, highLow, moreInfo, appendee;
 
       time = moment.unix(f.time),
       maxTemp = Math.round( f.temperatureMax ),
@@ -165,10 +165,12 @@ var WeatherView = Backbone.View.extend({
       highLow = '<p class=\"high-low\">',
       highLow += maxTemp + '<span>&deg;</span>' + ' / ',
       highLow += minTemp + '<span>&deg;</span>',
-      highLow += '</p>';
+      highLow += '</p>',
+      moreInfo = '<div class=\"more-info\"><p>' + f.summary,
+      moreInfo += '</p></div>';
 
       appendee = '<li><div class=\"daily-container\">',
-      appendee += date + icon + highLow + '</div></li>';
+      appendee += date + icon + highLow + moreInfo + '</div></li>';
 
       $( '#forecast-list' ).append( appendee );
       console.log( f );

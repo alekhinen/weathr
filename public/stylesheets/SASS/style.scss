@@ -307,7 +307,6 @@ a {
       }
 
       p {
-        text-align: center;
         margin: 0px;
       }
     }
@@ -329,6 +328,19 @@ a {
       position: absolute;
       right: 0px;
       top: 2px;
+    }
+  }
+
+  .more-info {
+    // display: none;
+    padding-top: 9px;
+    padding-bottom: 9px;
+
+    p {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 200;
+      letter-spacing: .5px;
     }
   }
 }
