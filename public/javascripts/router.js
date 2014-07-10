@@ -2,7 +2,10 @@
 var indexView,
   weatherView,
   weatherModel,
+  recentSearches,
   currentView = null;
+
+recentSearches = new RecentSearches();
 
 // routes ---------------------------------------------------------------------
 var Router = Backbone.Router.extend({
@@ -34,6 +37,7 @@ router.on('route:weather', function( address ) {
     address: address
   });
 
+  recentSearches.unshift( weatherModel );
   weatherView = new WeatherView({
     model: weatherModel
   });
