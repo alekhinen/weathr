@@ -55,39 +55,13 @@ var IndexView = Backbone.View.extend({
   },
 
   submitLocation: function() {
-    var ajaxURL, location;
+    var location, locAdd;
 
-    ajaxURL  = 'https://maps.googleapis.com/maps/api/geocode/json?address=',
     location = $('#location')[0].value.replace( ' ', '+' ),
-    ajaxURL += location,
-    ajaxURL += '&key=...';
-    console.log('submitting location...');
+    locAdd = 'weather/address/' + location;
 
-    // $.ajax({
-    //   url: ajaxURL,
-    //   type: 'GET',
-    //   success: function( data, status, jqXHR ) {
-    //     var dLat = data.results[0].geometry.location.lat,
-    //       dLong  = data.results[0].geometry.location.lng,
-    //       newLoc = '#weather/lat/' + dLat + '/long/' + dLong ;
-    //     console.log( newLoc );
-    //     window.location.hash = newLoc;
-    //   },
-    //   error: function( jqXHR, textStatus, errorThrown ) {
-    //     console.log( textStatus, errorThrown );
-    //   }
-    // });
+    window.location.hash = locAdd;
 
-    $.ajax({
-      url: '/geocode/address/' + location,
-      type: 'GET',
-      success: function( data, status, jqXHR ) {
-        console.log('wowwww');
-      },
-      error: function( jqXHR, textStatus, errorThrown ) {
-        console.log( textStatus, errorThrown );
-      }
-    });
   }
 
 });

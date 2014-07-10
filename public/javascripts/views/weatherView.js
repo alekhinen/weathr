@@ -9,24 +9,64 @@ var WeatherView = Backbone.View.extend({
 
   initialize: function() {
     console.log('initializing WeatherView');
-    var lat, lng, ajaxURL,
+    var address, geoLoc, weatherData,
       self = this;
 
-    lat = this.model.attributes.lat,
-    lng = this.model.attributes.lng,
-    ajaxURL = 'weather/lat/' + lat + '/long/' + lng;
+    address = this.model.attributes.address;
+    // GET the geolocation data
+    geoLoc = this.getGeolocation( address );
+    // GET the weather data
+    weatherData = this.getWeatherData( geoLoc );
+
+    if ( weatherData ) {
+      this.render();
+      this.timer = setInterval(self.updateTime, 1000);
+    }
+
+  },
+
+  getGeolocation: function( addy ) {
+    var result;
+
+    $.ajax({
+      url: '/geocode/address/' + addy,
+      type: 'GET',
+      async: false,
+      success: function( data, status, jqXHR ) {
+        result = data;
+      },
+      error: function( jqXHR, textStatus, errorThrown ) {
+        console.log( textStatus, errorThrown );
+      }
+    });
+    // return statement must be outside success fn for AJAX to be !async.
+    return result;
+  },
+
+  getWeatherData: function( geo ) {
+    var lat, lng, ajaxURL, self, result;
+
+    geo     = JSON.parse( geo );
+    lat     = geo.results[0].geometry.location.lat,
+    lng     = geo.results[0].geometry.location.lng,
+    ajaxURL = 'weather/lat/' + lat + '/lng/' + lng,
+    self    = this;
 
     $.ajax({
       url: ajaxURL,
       type: 'GET',
+      async: false,
       success: function( data, status, jqXHR ) {
-        console.log( data );
         self.model.set(data);
-        self.render();
-
-        self.timer = setInterval(self.updateTime, 1000);
+        result = true;
+      },
+      error: function( jqXHR, textStatus, errorThrown ) {
+        console.log( textStatus, errorThrown );
+        result = false;
       }
     });
+
+    return result;
   },
 
   render: function() {
@@ -47,14 +87,12 @@ var WeatherView = Backbone.View.extend({
   },
 
   updateTime: function() {
-    self.model.set('currentTime', moment().local() );
     var m = moment().local().format('h:mm:ss A');
     $('.current-time')[0].innerHTML = m;
   },
 
   remove: function() {
     clearInterval( this.timer );
-    console.log( 'asdfadfs' );
     return Backbone.View.prototype.remove.call( this );
   }
 

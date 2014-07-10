@@ -9,8 +9,8 @@ var options = {
 },
 forecast = new Forecast(options);
 
-// GET weather/lat/:lat/long/:lng
-router.get('/lat/:lat/long/:lng', function(req, res) {
+// GET weather/lat/:lat/lng/:lng
+router.get('/lat/:lat/lng/:lng', function(req, res) {
   var rp = req.params,
     lat = rp.lat,
     lng = rp.lng;

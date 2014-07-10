@@ -8,7 +8,7 @@ var indexView,
 var Router = Backbone.Router.extend({
   routes: {
     '': 'index',
-    'weather/lat/:lat/long/:lng': 'weather'
+    'weather/address/:address': 'weather'
   }
 });
 
@@ -25,21 +25,20 @@ router.on('route:index', function() {
   indexView.render();
 });
 
-router.on('route:weather', function( lat, lng ) {
+router.on('route:weather', function( address ) {
   if ( currentView ) {
     currentView.remove();
   }
 
   weatherModel = new WeatherModel({
-    lat: lat,
-    lng: lng
+    address: address
   });
 
   weatherView = new WeatherView({
     model: weatherModel
   });
+
   weatherView.$el.appendTo('#app');
-  console.log( weatherView );
   currentView = weatherView;
 });
 

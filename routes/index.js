@@ -23,32 +23,20 @@ router.get('/geocode/address/:address', function( req, res ) {
     method: 'GET'
   };
 
-  // var locReq = https.request(options, function( geoRes ) {
-  //   console.log( '-------------------' );
-  //   console.log( geoRes );
-  // });
+  var locReq = https.request(options, function( response ) {
+    var data = "";
 
-  // locReq.on('error', function(e) {
-  //   console.error(e);
-  // });
+    response.on('data', function (chunk) {
+      data += chunk;
+    });
 
-
-
-  // var options = {
-  //   hostname: 'encrypted.google.com',
-  //   port: 443,
-  //   path: '/',
-  //   method: 'GET'
-  // };
-
-  var locReq = https.request(options, function( geoRes ) {
-    console.log("statusCode: ",  geoRes .statusCode);
-    console.log("headers: ",  geoRes .headers);
-    console.log('---------------');
-
-    console.log( geoRes );
+    response.on('end', function(){
+      console.log( data );
+      res.send( data );
+    });
 
   });
+
   locReq.end();
 
   locReq.on('error', function(e) {
