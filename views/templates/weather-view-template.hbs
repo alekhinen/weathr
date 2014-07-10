@@ -1,6 +1,28 @@
 <script type="template" id="weather-view-template">
   <section id="weather" class="full-screen">
 
+    <div class="top-right recent-searches">
+      <h4>Recent Searches</h4>
+      <ul class="recent-searches-list">
+        <li>
+          <a href="#" class="current">
+            <span class="step size-14">
+              <i class="icon ion-ios7-location"></i>
+            </span>
+            <%= formatted_address %>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="step size-14">
+              <i class="icon ion-ios7-location-outline"></i>
+            </span>
+            Dallas, TX, USA
+          </a>
+        </li>
+      </ul>
+    </div>
+
     <div class="center-content">
       <div style="float:left;">
         <span class="step size-24">

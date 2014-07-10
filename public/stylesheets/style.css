@@ -7,6 +7,19 @@ body {
   font: 14px 'Helvetica Neue', "HelveticaNeue-Light", "Helvetica Neue Light", "Lato", Helvetica, Arial, "Lucida Grande", sans-serif;
   color: white; }
 
+a {
+  color: white;
+  font-size: 12px;
+  font-weight: 200;
+  text-transform: none; }
+  a:hover {
+    color: white;
+    text-transform: underline;
+    font-size: 12px; }
+
+.current {
+  font-weight: bold; }
+
 #super-container {
   position: absolute;
   top: 0px;
@@ -32,11 +45,8 @@ body {
   left: 0px;
   right: 0px; }
 
-a {
-  color: #00B7FF; }
-
-#index-location-search {
-  width: 441px;
+.index-form-container {
+  width: 470px;
   height: 80px;
   background: rgba(0, 0, 0, 0.3);
   padding: 20px;
@@ -46,6 +56,19 @@ a {
   top: 50%;
   margin-top: -40px;
   position: relative; }
+  .index-form-container #current-location {
+    float: right;
+    border-radius: 4px;
+    padding: 0px 10px;
+    min-height: 34px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.15); }
+    .index-form-container #current-location:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1); }
+
+#index-location-search {
+  float: left; }
   #index-location-search h3 {
     float: left;
     margin-right: 10px;
@@ -54,17 +77,32 @@ a {
   #index-location-search input {
     float: left;
     width: 210px;
-    margin-right: 10px; }
+    margin-right: 0px;
+    border-radius: 0px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border: 0px; }
   #index-location-search button {
-    float: right; }
+    float: left;
+    border-radius: 0px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    height: 34px; }
+    #index-location-search button:hover i {
+      opacity: 0.3; }
 
+#weather .top-right {
+  position: absolute;
+  top: 10px;
+  left: 10px; }
 #weather .center-content {
   position: relative;
   margin: auto;
   width: 300px;
   height: 60px;
   top: 50%;
-  margin-top: -30px; }
+  margin-top: -30px;
+  text-align: center; }
 #weather .bottom-left {
   position: absolute;
   bottom: 0px;
@@ -72,13 +110,16 @@ a {
 
 .current-time {
   font-size: 50px;
-  font-weight: 100; }
+  font-weight: 200; }
+  .current-time span {
+    font-weight: 100;
+    font-size: 29px; }
 
 .current-content {
   position: relative; }
   .current-content .current-weather-summary {
     float: left;
-    margin-top: 46px;
+    margin-top: 80px;
     margin-left: 10px; }
   .current-content .weather-summary span {
     display: inline-block; }
@@ -86,16 +127,31 @@ a {
 .current-temp {
   float: left;
   font-weight: 100;
-  font-size: 60px; }
+  font-size: 100px; }
   .current-temp span {
-    margin-left: -14px;
-    top: -20px;
+    margin-left: -30px;
+    top: -50px;
     position: relative;
     font-size: 30px;
-    font-weight: 400; }
+    font-weight: 100; }
+
+.recent-searches {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 21px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  border-radius: 2px; }
+  .recent-searches .recent-searches-list {
+    list-style-type: none;
+    padding-left: 0px; }
+  .recent-searches li {
+    margin-bottom: 7px; }
+  .recent-searches a span {
+    float: left;
+    margin-right: 1px; }
 
 .step:hover i {
-  opacity: 0.3; }
+  opacity: 1; }
 
 .step i {
   text-align: center;

@@ -4,7 +4,8 @@ var IndexView = Backbone.View.extend({
   template: _.template($('#index-view-template').html()),
 
   events: {
-    'submit #index-location-search': 'submitLocation'
+    'submit #index-location-search': 'submitLocation',
+    'click #current-location': 'submitCurLocation'
   },
 
   initialize: function() {
@@ -62,6 +63,10 @@ var IndexView = Backbone.View.extend({
 
     window.location.hash = locAdd;
 
+  },
+
+  submitCurLocation: function() {
+    window.location.hash = 'weather/address/current';
   }
 
 });
