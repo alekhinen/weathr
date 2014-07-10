@@ -58,7 +58,7 @@ var IndexView = Backbone.View.extend({
   submitLocation: function() {
     var location, locAdd;
 
-    location = $('#location')[0].value.replace( ' ', '+' ),
+    location = $('#location')[0].value.replace( /\s/g, '+' ),
     locAdd = 'weather/address/' + location;
 
     window.location.hash = locAdd;

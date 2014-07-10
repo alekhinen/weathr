@@ -66,7 +66,7 @@ var WeatherView = Backbone.View.extend({
           lng: geoData.results[0].geometry.location.lng
         };
         // set model
-        self.model.set( geoData.results[0] );
+        self.model.set( 'geoLocation', geoData.results[0] );
       },
       error: function( jqXHR, textStatus, errorThrown ) {
         console.log( textStatus, errorThrown );
@@ -88,15 +88,13 @@ var WeatherView = Backbone.View.extend({
       type: 'GET',
       async: false,
       success: function( data, status, jqXHR ) {
-        console.log( 'great success' );
         geoData = JSON.parse( data );
-        console.log( geoData );
         // realistically, this could just be the supplied lat & lng.
         result = {
           lat: geoData.results[0].geometry.location.lat,
           lng: geoData.results[0].geometry.location.lng
         };
-        self.model.set( geoData.results[0] );
+        self.model.set( 'geoLocation', geoData.results[0] );
       },
       error: function( jqXHR, textStatus, errorThrown ) {
         console.log( textStatus, errorThrown );
@@ -119,7 +117,7 @@ var WeatherView = Backbone.View.extend({
       type: 'GET',
       async: false,
       success: function( data, status, jqXHR ) {
-        self.model.set( data );
+        self.model.set( 'weather', data );
         result = true;
       },
       error: function( jqXHR, textStatus, errorThrown ) {
@@ -132,6 +130,12 @@ var WeatherView = Backbone.View.extend({
   },
 
   render: function() {
+    this.setGradient();
+    this.$el.html( this.template(this.model.toJSON()) );
+    this.setWeeklyForecast();
+  },
+
+  setGradient: function() {
     var s1, s2, s3;
 
     window.draw = SVG('super-container').size('100%', '100%');
@@ -143,8 +147,33 @@ var WeatherView = Backbone.View.extend({
     window.rect = draw.rect('200%', '200%').attr({
       fill: gradient
     });
+  },
 
-    this.$el.html( this.template(this.model.toJSON()) );
+  setWeeklyForecast: function() {
+    var forecast = this.model.get('weather').daily.data;
+
+    _.each( forecast, function( f ) {
+      var time, maxTemp, minTemp, icon, date, highLow, appendee;
+
+      time = moment.unix(f.time),
+      maxTemp = Math.round( f.temperatureMax ),
+      minTemp = Math.round( f.temperatureMin ),
+      date = '<p class=\"date\">' + time.format('dddd') + '</p>',
+      icon = '<span class=\"step size-18\">',
+      icon += '<i class=\"icon ' + f.icon + '\"></i>',
+      icon += '</span>',
+      highLow = '<p class=\"high-low\">',
+      highLow += maxTemp + '<span>&deg;</span>' + ' / ',
+      highLow += minTemp + '<span>&deg;</span>',
+      highLow += '</p>';
+
+      appendee = '<li><div class=\"daily-container\">',
+      appendee += date + icon + highLow + '</div></li>';
+
+      $( '#forecast-list' ).append( appendee );
+      console.log( f );
+
+    });
   },
 
   updateTime: function() {

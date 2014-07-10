@@ -1,7 +1,7 @@
 <script type="template" id="weather-view-template">
   <section id="weather" class="full-screen">
 
-    <div class="top-right recent-searches">
+    <div class="top-left recent-searches">
       <h4>Recent Searches</h4>
       <ul class="recent-searches-list">
         <li>
@@ -9,7 +9,7 @@
             <span class="step size-14">
               <i class="icon ion-ios7-location"></i>
             </span>
-            <%= formatted_address %>
+            <%= geoLocation.formatted_address %>
           </a>
         </li>
         <li>
@@ -21,6 +21,20 @@
           </a>
         </li>
       </ul>
+
+      <form id="location-search" class="location-search" onsubmit="event.preventDefault();">
+        <input id="location" name="location" type="search" class="form-control" placeholder="Search for a location">
+        <button type="submit" class="btn btn-primary">
+          <span class="step size-14">
+            <i class="icon ion-search"></i>
+          </span>
+        </button>
+      </form>
+    </div>
+
+    <div class="top-right daily-weather">
+      <h4>Forecast</h4>
+      <ul id="forecast-list"></ul>
     </div>
 
     <div class="center-content">
@@ -38,17 +52,32 @@
     <div class="bottom-left">
       <div class="current-content">
 
+        <h3 class="current-high-low">
+          <span class="high">
+            <span class="step size-48">
+              <i class="icon ion-ios7-arrow-thin-up"></i>
+            </span>
+            <%= weather.daily.data[0].apparentTemperatureMax %>
+          </span>
+
+          <span class="low">
+            <span class="step size-48">
+              <i class="icon ion-ios7-arrow-thin-down"></i>
+            </span>
+            <%= weather.daily.data[0].apparentTemperatureMin %>
+          </span>
+        </h3>
         <h1 class="current-temp">
-          <%= currently.temperature %>
+          <%= weather.currently.temperature %>
           <span>&deg; F</span>
         </h1>
 
         <div class="current-weather-summary">
           <p class="weather-summary">
             <span class="step size-32">
-              <i class="icon <%= currently.icon %>"></i>
+              <i class="icon <%= weather.currently.icon %>"></i>
             </span>
-            <%= currently.summary %>
+            <%= weather.currently.summary %>
           </p>
         </div>
 
