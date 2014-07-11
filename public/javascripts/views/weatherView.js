@@ -133,6 +133,7 @@ var WeatherView = Backbone.View.extend({
     this.setGradient();
     this.$el.html( this.template(this.model.toJSON()) );
     this.setWeeklyForecast();
+    this.setRecentSearches();
   },
 
   setGradient: function() {
@@ -175,6 +176,30 @@ var WeatherView = Backbone.View.extend({
       $( '#forecast-list' ).append( appendee );
       console.log( f );
 
+    });
+  },
+
+  setRecentSearches: function() {
+    var appendee;
+    var rs = recentSearches.toJSON();
+    var first = true;
+
+    _.each( rs, function( r ) {
+      if ( first ) {
+        first = false;
+        appendee = '<li><a href=\"#\" class=\"current\">',
+        appendee += '<span class=\"step size-14\">',
+        appendee += '<i class=\"icon ion-ios7-location\"></i></span>',
+        appendee += r.geoLocation.formatted_address + '</li>'
+      } else {
+        appendee = '<li><a href=\"#\" class=\"current\">',
+        appendee += '<span class=\"step size-14\">',
+        appendee += '<i class=\"icon ion-ios7-location-outline\"></i></span>',
+        appendee += r.geoLocation.formatted_address + '</li>'
+      }
+
+      $( '.recent-searches-list' ).append( appendee );
+      console.log( r );
     });
   },
 
