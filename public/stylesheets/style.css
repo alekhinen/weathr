@@ -243,6 +243,7 @@ a {
       right: 0px;
       top: 2px; }
   .daily-weather .more-info {
+    display: none;
     padding-top: 9px;
     padding-bottom: 9px; }
     .daily-weather .more-info p {

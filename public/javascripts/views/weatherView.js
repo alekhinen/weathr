@@ -4,7 +4,8 @@ var WeatherView = Backbone.View.extend({
   template: _.template($('#weather-view-template').html()),
 
   events: {
-    'submit #location-search': 'submitLocation'
+    'submit #location-search': 'submitLocation',
+    'click .daily-container': 'toggleMoreInfo'
   },
 
   initialize: function() {
@@ -23,7 +24,7 @@ var WeatherView = Backbone.View.extend({
         var lat, lng;
         lat = pos.coords.latitude;
         lng = pos.coords.longitude;
-        geoLoc = self.getLocFromCoords( lat, lng );
+        geoLoc = self.getLocationFromCoordinates( lat, lng );
         weatherData = self.getWeatherData( geoLoc );
 
         if ( weatherData ) {
@@ -81,7 +82,7 @@ var WeatherView = Backbone.View.extend({
     return result;
   },
 
-  getLocFromCoords: function( lat, lng ) {
+  getLocationFromCoordinates: function( lat, lng ) {
     var result, geoData,
       self = this;
 
@@ -134,13 +135,13 @@ var WeatherView = Backbone.View.extend({
   },
 
   render: function() {
-    this.setGradient();
+    this.renderGradient();
     this.$el.html( this.template(this.model.toJSON()) );
-    this.setWeeklyForecast();
+    this.renderWeeklyForecast();
     this.renderRecentSearches();
   },
 
-  setGradient: function() {
+  renderGradient: function() {
     var s1, s2, s3;
 
     window.draw = SVG('super-container').size('100%', '100%');
@@ -154,7 +155,7 @@ var WeatherView = Backbone.View.extend({
     });
   },
 
-  setWeeklyForecast: function() {
+  renderWeeklyForecast: function() {
     var forecast = this.model.get('weather').daily.data;
 
     _.each( forecast, function( f ) {
@@ -216,6 +217,11 @@ var WeatherView = Backbone.View.extend({
     locAdd = 'weather/address/' + location;
 
     window.location.hash = locAdd;
+  },
+
+  toggleMoreInfo: function( e ) {
+    console.log('toggling');
+    $( e.currentTarget.lastChild ).toggle(500);
   },
 
   updateTime: function( mdl ) {
