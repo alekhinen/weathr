@@ -5,13 +5,15 @@ var WeatherView = Backbone.View.extend({
 
   events: {
     'submit #location-search': 'submitLocation',
-    'click .daily-container': 'toggleMoreInfo'
+    'click .daily-item': 'toggleMoreInfo'
   },
 
   initialize: function() {
     console.log('initializing WeatherView');
     var address, geoLoc, weatherData,
       self = this;
+
+    this.model.on('change', this.render.bind( this ));
 
     // Get the address from the model.
     address = this.model.attributes.address;
@@ -28,6 +30,7 @@ var WeatherView = Backbone.View.extend({
         weatherData = self.getWeatherData( geoLoc );
 
         if ( weatherData ) {
+          console.log('about to call render');
           self.render();
           self.timer = setInterval( function() {
             self.updateTime( self.model.toJSON() );
@@ -135,24 +138,55 @@ var WeatherView = Backbone.View.extend({
   },
 
   render: function() {
-    this.renderGradient();
+    console.trace();
+    this.renderGradient( this.model.toJSON() );
     this.$el.html( this.template(this.model.toJSON()) );
     this.renderWeeklyForecast();
     this.renderRecentSearches();
   },
 
-  renderGradient: function() {
+  renderGradient: function( mdl ) {
     var s1, s2, s3;
 
+    var sunrise, sunset, currentTime;
+
+    var daytime = {
+      primary: new SVG.Color('rgb(97,155,215)'),
+      secondary: new SVG.Color('rgb(192,188,116)')
+    };
+    var nighttime = {
+      primary: new SVG.Color('rgb(54,81,180)'),
+      secondary: new SVG.Color('rgb(10,25,52)')
+    };
+
+    currentTime = mdl.weather.currently.time,
+    sunrise = mdl.weather.daily.data[0].sunriseTime,
+    sunset = mdl.weather.daily.data[0].sunsetTime;
+
+    console.log( currentTime, sunrise, sunset );
+
     window.draw = SVG('super-container').size('100%', '100%');
-    window.gradient = draw.gradient('radial', function(stop) {
-      s1 = stop.at(0, '#a12f42');
-      s2 = stop.at(0.4, '#872736');
-      s3 = stop.at(1, '#1d1e65');
-    });
-    window.rect = draw.rect('200%', '200%').attr({
-      fill: gradient
-    });
+
+    if ( (sunrise < currentTime) && (currentTime < sunset) ) {
+      window.gradient = draw.gradient('radial', function(stop) {
+        s1 = stop.at(0, daytime.secondary);
+        s3 = stop.at(1, daytime.primary);
+      });
+    } else {
+      window.gradient = draw.gradient('radial', function(stop) {
+        s1 = stop.at(0, nighttime.seconday);
+        s3 = stop.at(1, nighttime.primary);
+      });
+    }
+
+    if ( window.rect ) {
+      window.rect.fill( gradient );
+    } else {
+      window.rect = draw.rect('200%', '200%').attr({
+        fill: gradient
+      });
+    }
+
   },
 
   renderWeeklyForecast: function() {
@@ -175,13 +209,12 @@ var WeatherView = Backbone.View.extend({
       moreInfo = '<div class=\"more-info\"><p>' + f.summary,
       moreInfo += '</p></div>';
 
-      appendee = '<li><div class=\"daily-container\">',
+      appendee = '<li class=\"daily-item\"><div class=\"daily-container\">',
       appendee += date + icon + highLow + moreInfo + '</div></li>';
 
-      $( '#forecast-list' ).append( appendee );
-      console.log( f );
+      this.$el.find( '#forecast-list' ).append( appendee );
 
-    });
+    }.bind( this ));
   },
 
   renderRecentSearches: function() {
@@ -205,9 +238,9 @@ var WeatherView = Backbone.View.extend({
         appendee += r.geoLocation.formatted_address + '</li>';
       }
 
-      $( '.recent-searches-list' ).append( appendee );
+      this.$el.find( '.recent-searches-list' ).append( appendee );
       console.log( r );
-    });
+    }.bind( this ));
   },
 
   submitLocation: function() {
@@ -220,8 +253,8 @@ var WeatherView = Backbone.View.extend({
   },
 
   toggleMoreInfo: function( e ) {
-    console.log('toggling');
-    $( e.currentTarget.lastChild ).toggle(500);
+    $( e.currentTarget ).toggleClass('active');
+    $( e.currentTarget.firstChild.lastChild ).toggle(500);
   },
 
   updateTime: function( mdl ) {

@@ -291,6 +291,7 @@ a {
   padding: 21px;
   padding-top: 9px;
   padding-bottom: 9px;
+  width: 300px;
 
   #forecast-list {
     margin-left: -21px;
@@ -300,15 +301,15 @@ a {
     list-style-type: none;
 
     li {
-      background: rgba(0,0,0,0.1);
+      background: rgba(0,0,0,0);
       padding: 21px;
       padding-bottom: 9px;
       padding-top: 9px;
       min-height: 40px;
       position: relative;
 
-      -webkit-box-shadow: inset 0px 10px 25px -5px rgba(0, 0, 0, 0.2);
-      box-shadow: inset 0px 10px 25px -5px rgba(0, 0, 0, 0.2);
+      -webkit-box-shadow: inset 0px 10px 20px -15px rgba(0, 0, 0, 0.3);;
+      box-shadow: inset 0px 10px 20px -15px rgba(0, 0, 0, 0.3);;
 
       -webkit-transition: 500ms;
       transition: 500ms;
@@ -323,6 +324,13 @@ a {
         margin: 0px;
       }
     }
+
+    .active {
+      -webkit-box-shadow: inset 0px 10px 1000px -5px rgba(0, 0, 0, 0.6);
+      box-shadow: inset 0px 10px 1000px -5px rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+    }
+
   }
 
   .daily-container {

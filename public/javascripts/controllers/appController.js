@@ -31,7 +31,7 @@ var AppController = Marionette.Controller.extend({
     });
 
     weatherView.$el.appendTo('#app');
-    weatherView.render();
+    // weatherView.render();
     this.currentView = weatherView;
   },
 

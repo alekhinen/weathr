@@ -34,6 +34,14 @@ var IndexView = Backbone.View.extend({
     var pWidth, pHeight, mX, mY, percX, percY,
       red, green, blue, max, col, col2;
 
+    // Color codes
+    // Daytime
+    //   - blue: rgba(97,155,215,1)
+    //   - yellow: rgba(192,188,116,1)
+    // Nighttime
+    //   - light-blue: rgba(54,81,180,1)
+    //   - dark-blue: rgba(10,25,52,1)
+
     max = 255,
     pWidth = $(document).width(),
     pHeight = $(document).height(),
@@ -67,6 +75,11 @@ var IndexView = Backbone.View.extend({
 
   submitCurLocation: function() {
     window.location.hash = 'weather/address/current';
+  },
+
+  remove: function() {
+    $( 'body' ).off('mousemove', this.updateGradient);
+    return Backbone.View.prototype.remove.call( this );
   }
 
 });
