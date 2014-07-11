@@ -19,7 +19,8 @@ app.engine( 'hbs', hbs.express3({
   defaultLayout: 'views/layout',
   partialsDir: [
     __dirname + '/views/shared',
-    __dirname + '/views/templates'
+    __dirname + '/views/templates',
+    __dirname + '/views/templates/weather_app'
   ]
 }));
 app.set( 'view engine', 'hbs' );

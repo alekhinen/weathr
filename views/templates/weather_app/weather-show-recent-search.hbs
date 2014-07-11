@@ -1,0 +1,17 @@
+<script type="template" id="weather-show-recent-search">
+  <% if ( current ) { %>
+    <a class="current">
+      <span class="step size-14">
+        <i class="icon ion-ios7-location"></i>
+      </span>
+      <%= formattedLocation %>
+    </a>
+  <% } else { %>
+    <a>
+      <span class="step size-14">
+        <i class="icon ion-ios7-location-outline"></i>
+      </span>
+      <%= formattedLocation %>
+    </a>
+  <% } %>
+</script>
