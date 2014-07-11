@@ -39,21 +39,21 @@
 
         <h3 class="current-high-low">
           <span class="high">
-            <span class="step size-48">
+            <span>
               <i class="icon ion-ios7-arrow-thin-up"></i>
             </span>
-            <%= weather.daily.data[0].apparentTemperatureMax %>
+            <%= Math.round( weather.daily.data[0].apparentTemperatureMax ) %>&deg;
           </span>
 
           <span class="low">
-            <span class="step size-48">
+            <span>
               <i class="icon ion-ios7-arrow-thin-down"></i>
             </span>
-            <%= weather.daily.data[0].apparentTemperatureMin %>
+            <%= Math.round( weather.daily.data[0].apparentTemperatureMin ) %>&deg;
           </span>
         </h3>
         <h1 class="current-temp">
-          <%= weather.currently.temperature %>
+          <%= Math.round( weather.currently.temperature ) %>
           <span>&deg; F</span>
         </h1>
 

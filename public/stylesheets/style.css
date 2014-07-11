@@ -138,6 +138,13 @@ a {
   .current-time span {
     font-weight: 100;
     font-size: 29px; }
+  .current-time h2 {
+    text-align: right;
+    font-weight: 200;
+    margin-top: 0px;
+    margin-right: 16px; }
+    .current-time h2 span:first-child {
+      font-size: 12px; }
 
 .current-content {
   position: relative; }
@@ -187,10 +194,12 @@ a {
   font-weight: 100; }
   .current-high-low .high, .current-high-low .low {
     display: inline-block;
-    margin-right: 29px; }
+    margin-right: 5px; }
     .current-high-low .high span, .current-high-low .low span {
       display: inline-block;
-      margin-right: -6px; }
+      margin-right: -6px;
+      font-size: 36px;
+      width: 28px; }
 
 .daily-weather {
   background: rgba(0, 0, 0, 0.2);
