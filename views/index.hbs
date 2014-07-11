@@ -9,14 +9,17 @@
 <script src="jquery-2.1.1.js"></script>
 <script src="underscore.js"></script>
 <script src="backbone.js"></script>
-<script src="backbone.layoutmanager.js"></script>
+<script src="marionette.js"></script>
 <script src="moment.js"></script>
-
-{{!-- <script src="javascripts/config.js"></script> --}}
-<script src="javascripts/app.js"></script>
 
 <script src="javascripts/views/indexView.js"></script>
 <script src="javascripts/models/weatherModel.js"></script>
 <script src="javascripts/collections/recentSearches.js"></script>
 <script src="javascripts/views/weatherView.js"></script>
+<script src="javascripts/controllers/appController.js"></script>
 <script src="javascripts/router.js"></script>
+<script src="javascripts/app.js"></script>
+
+<script>
+  App.start();
+</script>

@@ -193,6 +193,17 @@ a {
     font-weight: 100;
     font-size: 29px;
   }
+
+  h2 {
+    text-align: right;
+    font-weight: 200;
+    margin-top: 0px;
+    margin-right: 16px;
+
+    span:first-child {
+      font-size: 12px;
+    }
+  }
 }
 
 .current-content {
@@ -264,11 +275,13 @@ a {
 
   .high, .low {
     display: inline-block;
-    margin-right: 29px;
+    margin-right: 5px;
 
     span {
       display: inline-block;
       margin-right: -6px;
+      font-size: 36px;
+      width: 28px;
     }
   }
 }

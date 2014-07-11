@@ -28,7 +28,9 @@ var WeatherView = Backbone.View.extend({
 
         if ( weatherData ) {
           self.render();
-          self.timer = setInterval( self.updateTime, 1000 );
+          self.timer = setInterval( function() {
+            self.updateTime( self.model.toJSON() );
+          }, 1000 );
           console.log( self.model );
         }
       });
@@ -42,7 +44,9 @@ var WeatherView = Backbone.View.extend({
 
       if ( weatherData ) {
         this.render();
-        this.timer = setInterval(self.updateTime, 1000);
+        this.timer = setInterval( function() {
+          self.updateTime( self.model.toJSON() );
+        }, 1000 );
 
         console.log( this.model );
       }
@@ -133,7 +137,7 @@ var WeatherView = Backbone.View.extend({
     this.setGradient();
     this.$el.html( this.template(this.model.toJSON()) );
     this.setWeeklyForecast();
-    this.setRecentSearches();
+    this.renderRecentSearches();
   },
 
   setGradient: function() {
@@ -179,23 +183,25 @@ var WeatherView = Backbone.View.extend({
     });
   },
 
-  setRecentSearches: function() {
+  renderRecentSearches: function() {
     var appendee;
-    var rs = recentSearches.toJSON();
+    var rs = App.recentSearches.toJSON();
     var first = true;
 
     _.each( rs, function( r ) {
       if ( first ) {
         first = false;
-        appendee = '<li><a href=\"#\" class=\"current\">',
+        appendee = '<li><a href=\"#/weather/address/' + r.address,
+        appendee += '\" class=\"current\">',
         appendee += '<span class=\"step size-14\">',
         appendee += '<i class=\"icon ion-ios7-location\"></i></span>',
-        appendee += r.geoLocation.formatted_address + '</li>'
+        appendee += r.geoLocation.formatted_address + '</li>';
       } else {
-        appendee = '<li><a href=\"#\" class=\"current\">',
+        appendee = '<li><a href=\"#/weather/address/' + r.address,
+        appendee += '\">',
         appendee += '<span class=\"step size-14\">',
         appendee += '<i class=\"icon ion-ios7-location-outline\"></i></span>',
-        appendee += r.geoLocation.formatted_address + '</li>'
+        appendee += r.geoLocation.formatted_address + '</li>';
       }
 
       $( '.recent-searches-list' ).append( appendee );
@@ -203,11 +209,30 @@ var WeatherView = Backbone.View.extend({
     });
   },
 
-  updateTime: function() {
-    var curTime = moment().local();
-    var M = curTime.format('h:mm:ss');
-    var m = curTime.format('A');
-    $('.current-time')[0].innerHTML = M + '<span> ' + m + '</span>';
+  submitLocation: function() {
+    var location, locAdd;
+
+    location = $('#location')[0].value.replace( /\s/g, '+' ),
+    locAdd = 'weather/address/' + location;
+
+    window.location.hash = locAdd;
+  },
+
+  updateTime: function( mdl ) {
+    var timezone, curTime, locTime, ltM, ltm, M, m, a;
+
+    timezone = mdl.weather.offset * -1;
+    curTime = moment().local();
+    locTime = moment().zone( timezone );
+    ltM = locTime.format('h:mm:ss');
+    ltm = locTime.format('A');
+    M = curTime.format('h:mm');
+    m = curTime.format('A');
+    a = ltM + '<span> ' + ltm + '</span><h2 id=\"loc\">',
+    a += '<span>your local time </span>' + M,
+    a += '<span> ' + m + '</span></h2>';
+
+    $('.current-time')[0].innerHTML = a;
   },
 
   remove: function() {
