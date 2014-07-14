@@ -3,10 +3,10 @@ var router  = express.Router();
 var config  = require('../config');
 var https   = require('https');
 
-// GET /geocode/address -------------------------------------------------------
-router.get('/address/:address', function( req, res ) {
+// GET /geocode/location ------------------------------------------------------
+router.get('/location/:location', function( req, res ) {
 
-  var addy  = req.params.address,
+  var addy  = req.params.location,
     apiPath = '/maps/api/geocode/json?address=' + addy;
     apiPath += '&key=' + process.env.GEOCODE_API_KEY;
 

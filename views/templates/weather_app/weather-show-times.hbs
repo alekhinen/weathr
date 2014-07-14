@@ -1,0 +1,19 @@
+<script type="template" id="weather-show-times">
+  <div style="float:left;">
+    <span class="step size-24">
+      <i class="icon ion-arrow-up-c"></i>
+    </span>
+    <span class="step size-24">
+      <i class="icon ion-refresh"></i>
+    </span>
+  </div>
+  <h1 class="location-time">
+    <%= locationTime.format('h:mm:ss') %>
+    <span> <%= locationTime.format('a') %></span>
+  </h1>
+  <h2>
+    <span>your local time </span>
+    <%= localTime.format('h:mm') %>
+    <span> <%=  localTime.format('a') %></span>
+  </h2>
+</script>

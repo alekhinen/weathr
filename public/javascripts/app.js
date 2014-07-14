@@ -2,13 +2,19 @@
 
   'use strict';
 
-  window.App = new Backbone.Marionette.Application({
-    recentSearches: new RecentSearches()
+  // Initialize a new Marionette App.
+  window.App = new Backbone.Marionette.Application();
+
+  // Set the regions.
+  App.addRegions({
+    mainRegion: '#app'
   });
 
-  App.addInitializer( function ( options ) {
-    var router = new Router();
-    Backbone.history.start();
+  // Once the App starts, start listening to route changes.
+  App.on('start', function ( options ) {
+    if ( Backbone.history ) {
+      Backbone.history.start();
+    }
   });
 
 })( this );

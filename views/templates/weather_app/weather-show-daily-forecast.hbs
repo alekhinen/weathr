@@ -1,0 +1,17 @@
+<script type="template" id="weather-show-daily-forecast">
+  <div class="daily-container">
+    <p class="date">
+      <%= moment.unix( sunriseTime ).format('dddd') %>
+    </p>
+    <span class="step size-18">
+      <i class="icon <%= icon %>"></i>
+    </span>
+    <p class="high-low">
+      <%= Math.round( temperatureMax ) %> <span>&deg;</span> /
+      <%= Math.round( temperatureMin ) %> <span>&deg;</span>
+    </p>
+    <div class="more-info">
+      <p> <%= summary %> </p>
+    </div>
+  </div>
+</script>

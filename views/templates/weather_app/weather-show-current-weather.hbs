@@ -1,0 +1,30 @@
+<script type="template" id="weather-show-current-weather">
+  <h3 class="current-high-low">
+    <span class="high">
+      <span>
+        <i class="icon ion-ios7-arrow-thin-up"></i>
+      </span>
+      <%= Math.round( high ) %>&deg;
+    </span>
+
+    <span class="low">
+      <span>
+        <i class="icon ion-ios7-arrow-thin-down"></i>
+      </span>
+      <%= Math.round( low ) %>&deg;
+    </span>
+  </h3>
+  <h1 class="current-temp">
+    <%= Math.round( temperature ) %>
+    <span>&deg; F</span>
+  </h1>
+
+  <div class="current-weather-summary">
+    <p class="weather-summary">
+      <span class="step size-32">
+        <i class="icon <%= icon %>"></i>
+      </span>
+      <%= summary %>
+    </p>
+  </div>
+</script>

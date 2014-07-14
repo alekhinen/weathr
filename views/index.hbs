@@ -1,8 +1,16 @@
 <div id="app"></div>
 
 {{!-- templates ---------------------------------------------------------- --}}
-{{> index-view-template}}
-{{> weather-view-template}}
+{{> weather-show-layout}}
+
+{{> weather-show-index}}
+
+{{> weather-show-recent-search}}
+{{> weather-show-recent-searches}}
+{{> weather-show-daily-forecast}}
+{{> weather-show-daily-forecasts}}
+{{> weather-show-times}}
+{{> weather-show-current-weather}}
 
 {{!-- javascripts -------------------------------------------------------- --}}
 <script src="svg.js"></script>
@@ -12,13 +20,13 @@
 <script src="marionette.js"></script>
 <script src="moment.js"></script>
 
-<script src="javascripts/views/indexView.js"></script>
-<script src="javascripts/models/weatherModel.js"></script>
-<script src="javascripts/collections/recentSearches.js"></script>
-<script src="javascripts/views/weatherView.js"></script>
-<script src="javascripts/controllers/appController.js"></script>
-<script src="javascripts/router.js"></script>
 <script src="javascripts/app.js"></script>
+
+<script src="javascripts/entities/weather.js"></script>
+
+<script src="javascripts/apps/weather_app/weather_app.js"></script>
+<script src="javascripts/apps/weather_app/show/show_view.js"></script>
+<script src="javascripts/apps/weather_app/show/show_controller.js"></script>
 
 <script>
   App.start();
