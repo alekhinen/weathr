@@ -28,6 +28,14 @@ App.module('Entities', function (Entities, App, Backbone, Marionette, $, _) {
     model: Entities.DailyForecast
   });
 
+  // The forecast for an entire week
+  Entities.WeeklyForecast = Backbone.Model.extend({
+    defaults: {
+      icon: 'clear-day',
+      summary: 'Clear'
+    }
+  });
+
   // The location and local time
   Entities.Times = Backbone.Model.extend({
     defaults: {

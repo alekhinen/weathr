@@ -83,8 +83,8 @@ module.exports = {
       src: ['public/javascripts/**/*.js', 'routes/*.js']
     },
     options: {
-      // max of 120 chars per line
-      maxlen: 120
+      // max of 80 chars per line
+      maxlen: 80
     }
   },
   // we allow the use of "undefined globals" in /src linting so that

@@ -1,4 +1,5 @@
-App.module('WeatherApp', function (WeatherApp, App, Backbone, Marionette, $, _) {
+App.module('WeatherApp',
+  function (WeatherApp, App, Backbone, Marionette, $, _) {
 
   WeatherApp.Router = Marionette.AppRouter.extend({
     appRoutes: {
@@ -9,12 +10,10 @@ App.module('WeatherApp', function (WeatherApp, App, Backbone, Marionette, $, _) 
 
   var API = {
     index: function() {
-      console.log('hitting the index route.');
       WeatherApp.Show.Controller.showIndex();
     },
     weather: function( location ) {
-      console.log('hitting the weather route - ' + location);
-      WeatherApp.Show.Controller.showWeather(location);
+      WeatherApp.Weather.Controller.showWeather(location);
     }
   };
 
