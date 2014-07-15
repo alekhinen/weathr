@@ -93,7 +93,7 @@ a {
   padding-top: 9px;
   padding-bottom: 34px;
   border-radius: 2px;
-  min-width: 300px; }
+  min-width: 280px; }
   #recent-searches #recent-searches-list {
     list-style-type: none;
     padding-left: 0px; }
@@ -252,7 +252,7 @@ a {
   width: 100%; }
   .location-search input {
     float: left;
-    width: 90%;
+    width: 87%;
     margin-right: 0px;
     border-radius: 0px;
     border: 0px;
@@ -264,7 +264,7 @@ a {
     border-radius: 0px;
     padding: 0px;
     height: 34px;
-    width: 10%; }
+    width: 13%; }
     .location-search button:hover i {
       opacity: 0.3; }
 
@@ -277,12 +277,14 @@ a {
   margin-top: -30px;
   text-align: center; }
 
-.step:hover i {
-  opacity: 1; }
-
 .step i {
   text-align: center;
   display: block; }
+
+.hoverer:hover {
+  cursor: pointer; }
+  .hoverer:hover i {
+    opacity: 0.4; }
 
 .size-12 {
   font-size: 12px;

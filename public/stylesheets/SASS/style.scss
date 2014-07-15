@@ -124,7 +124,7 @@ a {
   padding-top: 9px;
   padding-bottom: 34px;
   border-radius: 2px;
-  min-width: 300px;
+  min-width: 280px;
 
   #recent-searches-list {
     list-style-type: none;
@@ -368,7 +368,7 @@ a {
 
   input {
     float: left;
-    width: 90%;
+    width: 87%;
     margin-right: 0px;
     border-radius: 0px;
     border: 0px;
@@ -382,7 +382,7 @@ a {
     border-radius: 0px;
     padding: 0px;
     height: 34px;
-    width: 10%;
+    width: 13%;
 
     &:hover {
       i { opacity: .3; }
@@ -418,10 +418,15 @@ a {
 
 
 // icons ----------------------------------------------------------------------
-.step:hover i { opacity: 1; }
 .step i {
   text-align: center;
   display: block;
+}
+.hoverer:hover {
+  cursor: pointer;
+  i {
+    opacity: .4;
+  }
 }
 
 .size-12 { font-size: 12px; width: 12px; }

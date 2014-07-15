@@ -1,5 +1,9 @@
 App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
 
+  // Controller Settings ------------------------------------------------------
+  Show.hasInitiallyLoaded = false;
+
+  // Controller ---------------------------------------------------------------
   Show.Controller = {
 
     recentSearches: new App.Entities.RecentSearches(),
@@ -41,6 +45,7 @@ App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
       });
 
       App.mainRegion.show( this.layout );
+      Show.hasInitiallyLoaded = true;
     },
 
     // Gets the Weather Views and listens to events.
@@ -108,7 +113,7 @@ App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
       dailyForecastsView = new Show.DailyForecasts({
         collection: new App.Entities.DailyForecasts( weatherData.daily.data )
       });
-      timesView          = new Show.Times({
+      timesView = new Show.Times({
         model: new App.Entities.Times({
           timezone: weatherData.timezone,
           tzOffset: weatherData.offset,
@@ -132,12 +137,12 @@ App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
       recentSearchesView.on( 'weather:submit:location', function( location ) {
         App.vent.trigger( 'submit:location', location );
       });
-      recentSearchesView.on( 'childview:submit:prevSearch', function(cV, s ) {
+      recentSearchesView.on( 'childview:submit:prevSearch', function( cV, s ) {
         // Not going to bubble this up to the weather_app.
         var l = s.attributes.locationURL,
-          gL = s.attributes.geoLoc,
-          wD = s.attributes.weatherData;
-        Backbone.history.navigate('weather/location/' + l);
+          gL  = s.attributes.geoLoc,
+          wD  = s.attributes.weatherData;
+        Backbone.history.navigate( 'weather/location/' + l );
         self.getWeatherViews( l, gL, wD );
 
       });

@@ -116,7 +116,15 @@ App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
       e.preventDefault();
       var location = $('#location')[0].value.replace( /\s/g, '+' );
       this.trigger( 'weather:submit:location', location );
+    },
+
+    onRender: function() {
+      if ( !Show.hasInitiallyLoaded ) {
+        this.$el.fadeOut( 0 );
+        this.$el.fadeIn( 1000 );
+      }
     }
+
   });
 
   // The forecast for a single day (singleton for DailyForecasts)
@@ -140,7 +148,15 @@ App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
     id: 'daily-forecasts',
     template: '#weather-show-daily-forecasts',
     childView: Show.DailyForecast,
-    childViewContainer: '#daily-forecast-list'
+    childViewContainer: '#daily-forecast-list',
+
+    onRender: function() {
+      if ( !Show.hasInitiallyLoaded ) {
+        this.$el.fadeOut( 0 );
+        this.$el.fadeIn( 1000 );
+      }
+    }
+
   });
 
   // Displays the location's time and local time.
@@ -152,6 +168,11 @@ App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
       'change': 'render'
     },
 
+    events: {
+      'click .ion-refresh': 'refreshModel',
+      'click .ion-arrow-down-c': 'incrementTime'
+    },
+
     initialize: function() {
       var self = this;
 
@@ -159,6 +180,14 @@ App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
         self.updateTime( self.model.toJSON() );
       }, 1000 );
       this.renderGradient();
+      this.initialFadeIn();
+    },
+
+    initialFadeIn: function() {
+      if ( !Show.hasInitiallyLoaded ) {
+        this.$el.fadeOut( 0 );
+        this.$el.fadeIn( 2000 );
+      }
     },
 
     renderGradient: function() {
@@ -203,6 +232,14 @@ App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
     updateTime: function( obj ) {
       this.model.set('locationTime', moment().zone( obj.tzOffset * -1 ) );
       this.model.set('localTime', moment().local() );
+    },
+
+    refreshModel: function() {
+      console.log('refreshing model...');
+    },
+
+    incrementTime: function() {
+      console.log('incrementing time...');
     }
 
   });
@@ -210,7 +247,15 @@ App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
   // Displays the current weather
   Show.CurrentWeather = Marionette.ItemView.extend({
     template: '#weather-show-current-weather',
-    id: 'current-weather'
+    id: 'current-weather',
+
+    onRender: function() {
+      if ( !Show.hasInitiallyLoaded ) {
+        this.$el.fadeOut( 0 );
+        this.$el.fadeIn( 1000 );
+      }
+    }
+
   });
 
 });
