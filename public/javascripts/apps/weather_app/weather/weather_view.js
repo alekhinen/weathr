@@ -58,6 +58,34 @@ App.module('WeatherApp.Weather',
 
   });
 
+  // Forecasts ----------------------------------------------------------------
+  Weather.ForecastsLayout = Marionette.LayoutView.extend({
+    id: 'forecasts-layout',
+    template: '#weather-forecasts-layout',
+
+    regions: {
+      fcRegion: '#forecasts-container'
+    },
+
+    events: {
+      'click #weekly-forecast-btn': 'switchToWeekly',
+      'click #hourly-forecast-btn': 'switchToHourly'
+    },
+
+    switchToWeekly: function( e ) {
+      $( e.currentTarget ).toggleClass( 'current' );
+      $( '#hourly-forecast-btn' ).toggleClass( 'current' );
+      this.trigger( 'forecasts:switch:weekly' );
+    },
+
+    switchToHourly: function( e ) {
+      $( e.currentTarget ).toggleClass( 'current' );
+      $( '#weekly-forecast-btn' ).toggleClass( 'current' );
+      this.trigger( 'forecasts:switch:hourly' );
+    }
+
+  });
+
   // DailyForecast ------------------------------------------------------------
   // The forecast for a single day (singleton for DailyForecasts)
   Weather.DailyForecast = Marionette.ItemView.extend({
@@ -71,6 +99,13 @@ App.module('WeatherApp.Weather',
     toggleMoreInfo: function( e ) {
       $( e.currentTarget.parentElement ).toggleClass('active');
       $( e.currentTarget.lastElementChild ).toggle(500);
+    },
+
+    onRender: function() {
+      if ( !Weather.hasInitiallyLoaded ) {
+        this.$el.fadeOut( 0 );
+        this.$el.fadeIn( 1000 );
+      }
     }
 
   });
@@ -92,6 +127,28 @@ App.module('WeatherApp.Weather',
 
   });
 
+  // HourlyForecast -----------------------------------------------------------
+  Weather.HourlyForecast = Marionette.ItemView.extend({
+    tagName: 'li',
+    template: '#weather-hourly-forecast'
+  });
+
+  // HourlyForecasts ----------------------------------------------------------
+  Weather.HourlyForecasts = Marionette.CompositeView.extend({
+    id: 'hourly-forecasts',
+    template: '#weather-hourly-forecasts',
+    childView: Weather.HourlyForecast,
+    childViewContainer: '#hourly-forecast-list',
+
+    onRender: function() {
+      if ( !Weather.hasInitiallyLoaded ) {
+        this.$el.fadeOut( 0 );
+        this.$el.fadeIn( 1000 );
+      }
+    }
+
+  });
+
   // Times --------------------------------------------------------------------
   // Displays the location's time and local time.
   Weather.Times = Marionette.ItemView.extend({
@@ -100,11 +157,6 @@ App.module('WeatherApp.Weather',
 
     modelEvents: {
       'change': 'render'
-    },
-
-    events: {
-      'click .ion-refresh': 'refreshModel',
-      'click .ion-arrow-down-c': 'incrementTime'
     },
 
     initialize: function() {
@@ -166,14 +218,6 @@ App.module('WeatherApp.Weather',
     updateTime: function( obj ) {
       this.model.set('locationTime', moment().zone( obj.tzOffset * -1 ) );
       this.model.set('localTime', moment().local() );
-    },
-
-    refreshModel: function() {
-      console.log('refreshing model...');
-    },
-
-    incrementTime: function() {
-      console.log('incrementing time...');
     }
 
   });

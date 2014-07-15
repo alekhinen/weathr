@@ -151,71 +151,52 @@ a {
 
 
 
-// weather-show-daily-forecasts -----------------------------------------------
-#daily-forecasts {
+// weather-forecasts-layout ---------------------------------------------------
+#forecasts-layout {
   background: rgba(0, 0, 0, 0.2);
   padding: 21px;
   padding-top: 9px;
   padding-bottom: 9px;
   width: 280px;
 
-  #daily-forecast-list {
-    margin-left: -21px;
-    margin-right: -21px;
-    min-width: 100%;
-    padding: 0px;
+  h4 {
+    float: left;
+  }
+
+  #forecast-types {
+    float: right;
     list-style-type: none;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 10px;
+    margin-bottom: 0px;
+    border-radius: 2px;
 
     li {
-      background: rgba(0,0,0,0);
-      position: relative;
+      float: right;
 
-      -webkit-box-shadow: inset 0px 10px 20px -15px rgba(0, 0, 0, 0.3);;
-      box-shadow: inset 0px 10px 20px -15px rgba(0, 0, 0, 0.3);;
-
-      -webkit-transition: 500ms;
-      transition: 500ms;
-
-      &:hover {
-        -webkit-box-shadow: inset 0px 10px 1000px -5px rgba(0, 0, 0, 0.6);
-        box-shadow: inset 0px 10px 1000px -5px rgba(0, 0, 0, 0.6);
-        cursor: pointer;
+      &:first-child {
+        margin-left: 10px;
       }
 
-      p {
-        margin: 0px;
+      a {
+        text-align: right;
+
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
-
-    .active {
-      -webkit-box-shadow: inset 0px 10px 1000px -5px rgba(0, 0, 0, 0.6);
-      box-shadow: inset 0px 10px 1000px -5px rgba(0, 0, 0, 0.6);
-      cursor: pointer;
-    }
-
   }
 
-  .daily-container {
-    position: relative;
-    padding: 21px;
-    padding-bottom: 9px;
-    padding-top: 9px;
-
-    .date {
-      position: absolute;
-      margin-top: 2px;
-    }
-    .step {
-      position: relative;
-      display: block;
-      margin: auto;
-    }
-    .high-low {
-      position: absolute;
-      right: 21px;
-      top: 9px;
-    }
+  .current {
+    font-weight: bold;
   }
+}
+
+
+
+// weather-daily-forecasts ----------------------------------------------------
+#daily-forecasts {
 
   .more-info {
     display: none;
@@ -231,6 +212,73 @@ a {
   }
 }
 
+#daily-forecast-list, #hourly-forecast-list {
+  max-height: 488px;
+  overflow: scroll;
+  margin-left: -21px;
+  margin-right: -21px;
+  min-width: 100%;
+  padding: 0px;
+  list-style-type: none;
+
+  li {
+    background: rgba(0,0,0,0);
+    position: relative;
+
+    -webkit-box-shadow: inset 0px 10px 20px -15px rgba(0, 0, 0, 0.3);;
+    box-shadow: inset 0px 10px 20px -15px rgba(0, 0, 0, 0.3);;
+
+    -webkit-transition: 500ms;
+    transition: 500ms;
+
+    &:hover {
+      -webkit-box-shadow: inset 0px 10px 1000px -5px rgba(0, 0, 0, 0.6);
+      box-shadow: inset 0px 10px 1000px -5px rgba(0, 0, 0, 0.6);
+      cursor: pointer;
+    }
+
+    p {
+      margin: 0px;
+    }
+  }
+
+  .active {
+    -webkit-box-shadow: inset 0px 10px 1000px -5px rgba(0, 0, 0, 0.6);
+    box-shadow: inset 0px 10px 1000px -5px rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+  }
+
+}
+
+#hourly-forecast-list {
+
+  .date {
+    font-size: 12px;
+    margin-top: 2px;
+  }
+}
+
+.daily-container, .hourly-container {
+  position: relative;
+  padding: 21px;
+  padding-bottom: 9px;
+  padding-top: 9px;
+
+  .date {
+    position: absolute;
+    margin-top: 2px;
+  }
+  .step {
+    position: relative;
+    display: block;
+    margin: auto;
+  }
+  .high-low {
+    position: absolute;
+    right: 21px;
+    top: 9px;
+  }
+}
 
 
 // weather-show-current-weather -----------------------------------------------
@@ -295,19 +343,24 @@ a {
 // weather-show-times ---------------------------------------------------------
 #times {
   margin: auto;
-  width: 280px;
+  height: 85px;
+  margin-top: -43px;
   text-align: right;
-  height: 98px;
-  margin-top: -49px;
+  width: 270px;
 
   span {
     font-weight: 100;
-    font-size: 29px;
+    font-size: 21px;
   }
 
   .location-time {
-    font-size: 50px;
+    font-size: 60px;
     font-weight: 200;
+    margin-top: 0px;
+
+    span {
+      margin-left: -10px;
+    }
   }
 
   h2 {
@@ -315,10 +368,24 @@ a {
     font-weight: 200;
     margin-top: 0px;
     margin-right: 0px;
+    margin-bottom: -9px;
 
     span:first-child {
       font-size: 12px;
+      margin-right: 5px;
     }
+    span:last-child {
+      width: 30px;
+      display: inline-block;
+    }
+  }
+
+  .location-time-sub {
+    text-transform: lowercase;
+    font-size: 12px;
+    margin-top: -14px;
+    display: block;
+    text-align: left;
   }
 
 }
