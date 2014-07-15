@@ -35,6 +35,9 @@ a {
 .form-control:-ms-input-placeholder {
   color: rgba(255, 255, 255, 0.6); }
 
+.small {
+  font-size: 12px; }
+
 #super-container {
   position: absolute;
   top: 0px;

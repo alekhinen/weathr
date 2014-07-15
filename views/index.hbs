@@ -1,16 +1,16 @@
 <div id="app"></div>
 
 {{!-- templates ---------------------------------------------------------- --}}
-{{> weather-show-layout}}
+{{> weather_app/show/layout}}
+{{> weather_app/show/index}}
 
-{{> weather-show-index}}
-
-{{> weather-show-recent-search}}
-{{> weather-show-recent-searches}}
-{{> weather-show-daily-forecast}}
-{{> weather-show-daily-forecasts}}
-{{> weather-show-times}}
-{{> weather-show-current-weather}}
+{{> weather_app/weather/layout}}
+{{> weather_app/weather/current-weather}}
+{{> weather_app/weather/daily-forecast}}
+{{> weather_app/weather/daily-forecasts}}
+{{> weather_app/weather/recent-search}}
+{{> weather_app/weather/recent-searches}}
+{{> weather_app/weather/times}}
 
 {{!-- javascripts -------------------------------------------------------- --}}
 <script src="javascripts/svg.js"></script>
@@ -27,6 +27,9 @@
 <script src="javascripts/apps/weather_app/weather_app.js"></script>
 <script src="javascripts/apps/weather_app/show/show_view.js"></script>
 <script src="javascripts/apps/weather_app/show/show_controller.js"></script>
+<script src="javascripts/apps/weather_app/weather/requests.js"></script>
+<script src="javascripts/apps/weather_app/weather/weather_view.js"></script>
+<script src="javascripts/apps/weather_app/weather/weather_controller.js"></script>
 
 <script>
   App.start();
