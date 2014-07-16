@@ -28,12 +28,25 @@ App.module('Entities', function (Entities, App, Backbone, Marionette, $, _) {
     model: Entities.DailyForecast
   });
 
-  // The forecast for an entire week
-  Entities.WeeklyForecast = Backbone.Model.extend({
+  // The forecast for a week/day
+  Entities.TimelyForecast = Backbone.Model.extend({
     defaults: {
       icon: 'clear-day',
       summary: 'Clear'
     }
+  });
+
+  Entities.HourlyForecast = Backbone.Model.extend({
+    defaults: {
+      icon: 'clear-day',
+      summary: 'Clear',
+      temperature: 72,
+      time: moment().local()
+    }
+  });
+
+  Entities.HourlyForecasts = Backbone.Collection.extend({
+    model: Entities.HourlyForecast
   });
 
   // The location and local time
@@ -44,7 +57,8 @@ App.module('Entities', function (Entities, App, Backbone, Marionette, $, _) {
       locationTime: moment().zone( 4 ),
       localTime: moment().local(),
       sunrise: moment().startOf('day').add('h', 6),
-      sunset: moment().endOf('day').subtract('h', 3)
+      sunset: moment().endOf('day').subtract('h', 3),
+      location: 'New York'
     }
   });
 

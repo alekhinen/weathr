@@ -1,0 +1,13 @@
+<script type="template" id="weather-hourly-forecast">
+  <div class="hourly-container">
+    <p class="date">
+      <%= moment.unix( time ).format('ddd, h:mm a') %>
+    </p>
+    <span class="step size-18">
+      <i class="icon <%= icon %>"></i>
+    </span>
+    <p class="high-low">
+      <%= Math.round( temperature ) %> <span>&deg;</span>
+    </p>
+  </div>
+</script>
