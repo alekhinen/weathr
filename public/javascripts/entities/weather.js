@@ -36,6 +36,7 @@ App.module('Entities', function (Entities, App, Backbone, Marionette, $, _) {
     }
   });
 
+  // The forecast for an hour
   Entities.HourlyForecast = Backbone.Model.extend({
     defaults: {
       icon: 'clear-day',
@@ -45,6 +46,7 @@ App.module('Entities', function (Entities, App, Backbone, Marionette, $, _) {
     }
   });
 
+  // A collection of hourly forecasts
   Entities.HourlyForecasts = Backbone.Collection.extend({
     model: Entities.HourlyForecast
   });

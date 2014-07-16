@@ -8,7 +8,6 @@ App.module('WeatherApp.Show',
   Show.Controller = {
 
     // Index ------------------------------------------------------------------
-    // Displays the Index View.
     showIndex: function() {
       var self = this;
 

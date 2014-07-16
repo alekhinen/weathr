@@ -6,7 +6,7 @@ App.module('WeatherApp.Weather.Requests',
   // controller.
   // --------------------------------------------------------------------------
 
-  // Gets location data from server.
+  // GET location data from server
   Requests.getLocationFromCoords = function( lat, lng ) {
     var result, geoData,
       self = this;
@@ -27,7 +27,7 @@ App.module('WeatherApp.Weather.Requests',
     return result;
   };
 
-  // Gets location data from a location (string)
+  // GET location data from a location (string)
   Requests.getLocationFromLocation = function( location ) {
     var result, geoData,
       self = this;
@@ -38,6 +38,9 @@ App.module('WeatherApp.Weather.Requests',
       async: false,
       success: function( data, status, jqXHR ) {
         result = JSON.parse( data ).results[0];
+        if ( !result ) {
+          result = false;
+        }
       },
       error: function( jqXHR, textStatus, errorThrown ) {
         console.log( textStatus, errorThrown );
@@ -49,7 +52,7 @@ App.module('WeatherApp.Weather.Requests',
     return result;
   };
 
-  // Gets weather data from server.
+  // GET weather data from server.
   Requests.getWeatherData = function( geo ) {
     var lat   = geo.geometry.location.lat,
       lng     = geo.geometry.location.lng,

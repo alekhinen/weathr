@@ -9,7 +9,7 @@ App.module('WeatherApp.Weather',
 
     recentSearches: new App.Entities.RecentSearches(),
 
-    // Displays all the Views associated with the Weather.
+    // Displays all views associated with the Weather.
     showWeather: function( location ) {
       var self = this;
 
@@ -23,7 +23,7 @@ App.module('WeatherApp.Weather',
       Weather.hasInitiallyLoaded = true;
     },
 
-    // Gets the Weather Views and listens to events.
+    // Requests server data to be passed into weather views.
     getWeather: function( location ) {
       var lat, lng, geoLoc, weatherData,
         self = this;
@@ -34,24 +34,29 @@ App.module('WeatherApp.Weather',
         navigator.geolocation.getCurrentPosition( function( pos ) {
           lat         = pos.coords.latitude,
           lng         = pos.coords.longitude,
-          geoLoc      = Weather.Requests.getLocationFromCoords( lat, lng ),
-          weatherData = Weather.Requests.getWeatherData( geoLoc );
-          if ( weatherData ) {
+          geoLoc      = Weather.Requests.getLocationFromCoords( lat, lng );
+          if ( geoLoc ) {
+            weatherData = Weather.Requests.getWeatherData( geoLoc );
+          } if ( weatherData ) {
             self.getWeatherViews( 'current', geoLoc, weatherData );
+          } else {
+            this.createErrorView();
           }
         });
 
       } else {
-        geoLoc = Weather.Requests.getLocationFromLocation( location ),
-        weatherData = Weather.Requests.getWeatherData( geoLoc );
-        if ( weatherData ) {
+        geoLoc = Weather.Requests.getLocationFromLocation( location );
+        if ( geoLoc ) {
+          weatherData = Weather.Requests.getWeatherData( geoLoc );
+        } if ( weatherData ) {
           this.getWeatherViews( location, geoLoc, weatherData );
+        } else {
+          this.createErrorView();
         }
       }
     },
 
-    // Creates new instances of all weather views, displays all views,
-    // and listens to events from the views.
+    // Create + display instances of all weather views + event listening
     getWeatherViews: function( location, geoLoc, weatherData ) {
       console.log( location, geoLoc, weatherData ); // DEBUG
 
@@ -152,6 +157,34 @@ App.module('WeatherApp.Weather',
       });
     },
 
+    // Create the error view + event listening.
+    createErrorView: function() {
+      var self = this;
+      this.createRecentSearchesView();
+      this.errorView = new Weather.ErrorView();
+
+      // TODO: should there be a separation of parts like getWeatherViews()?
+
+      this.layout.topLeftRegion.show( this.recentSearchesView );
+      this.layout.centerRegion.show( this.errorView );
+
+      // event listeners
+      this.recentSearchesView.on( 'weather:submit:location',
+        function( location ) {
+        App.vent.trigger( 'submit:location', location );
+      });
+      this.recentSearchesView.on( 'childview:submit:prevSearch',
+        function( cV, s ) {
+        // Not going to bubble this up to the weather_app.
+        var l = s.attributes.locationURL,
+          gL  = s.attributes.geoLoc,
+          wD  = s.attributes.weatherData;
+        Backbone.history.navigate( 'weather/location/' + l );
+        self.getWeatherViews( l, gL, wD );
+      });
+    },
+
+    // Initializes the event listeners for the weather views.
     initEventListeners: function( location, geoLoc, weatherData ) {
       var self = this;
 
@@ -167,7 +200,6 @@ App.module('WeatherApp.Weather',
           wD  = s.attributes.weatherData;
         Backbone.history.navigate( 'weather/location/' + l );
         self.getWeatherViews( l, gL, wD );
-
       });
       this.forecastsLayout.on( 'forecasts:switch:weekly', function( v ) {
         self.createForecastsViews( weatherData, false );
@@ -179,11 +211,12 @@ App.module('WeatherApp.Weather',
       });
     },
 
-
     // Updates the recentSearches collection with supplied object.
     updateRecentSearches: function( obj ) {
       // TODO: this will cause a memory leak. cap it at 10 models.
-      var alreadyExists = false;
+      var alreadyExists = false,
+        i = 0,
+        self = this;
 
       this.recentSearches.each( function ( model ) {
         model.set( 'current', false );
@@ -197,6 +230,14 @@ App.module('WeatherApp.Weather',
       if ( !alreadyExists ) {
         this.recentSearches.unshift( new App.Entities.RecentSearch( obj ) );
       }
+
+      // If the col is greater than 5 models, remove the last models.
+      this.recentSearches.each( function( model ) {
+        if ( i > 4 ) {
+          self.recentSearches.remove( model );
+        }
+        i++;
+      });
     },
 
     getLayoutView: function() {
