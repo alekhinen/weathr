@@ -27,11 +27,11 @@ router.get('/location/:location', function( req, res ) {
     });
   });
 
-  locReq.end();
-
   locReq.on('error', function(e) {
-    console.error(e);
+    console.error( e );
   });
+
+  locReq.end();
 
 });
 
@@ -59,10 +59,11 @@ router.get('/lat/:lat/lng/:lng', function( req, res ) {
     });
   });
 
-  locReq.end();
   locReq.on('error', function( e ) {
     console.error( e );
   });
+
+  locReq.end();
 
 });
 

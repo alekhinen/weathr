@@ -1,8 +1,7 @@
 App.module('WeatherApp.Weather',
   function (Weather, App, Backbone, Marionette, $, _) {
 
-  // --------------------------------------------------------------------------
-  // Layout View --------------------------------------------------------------
+  // Layout -------------------------------------------------------------------
   Weather.Layout = Marionette.LayoutView.extend({
     template: '#weather-layout',
 
@@ -13,11 +12,9 @@ App.module('WeatherApp.Weather',
       bottomLeftRegion:  '#bottom-left',
       bottomRightRegion: '#bottom-right'
     }
-
   });
 
-  // --------------------------------------------------------------------------
-  // Weather View(s) ----------------------------------------------------------
+  // RecentSearch -------------------------------------------------------------
   Weather.RecentSearch = Marionette.ItemView.extend({
     tagName: 'li',
     template: '#weather-recent-search',
@@ -29,7 +26,6 @@ App.module('WeatherApp.Weather',
     goToPreviousSearch: function( e ) {
       this.trigger( 'submit:prevSearch', this.model );
     }
-
   });
 
   // RecentSearches -----------------------------------------------------------
@@ -55,10 +51,9 @@ App.module('WeatherApp.Weather',
         this.$el.fadeIn( 1000 );
       }
     }
-
   });
 
-  // Forecasts ----------------------------------------------------------------
+  // Forecasts (Layout) -------------------------------------------------------
   Weather.ForecastsLayout = Marionette.LayoutView.extend({
     id: 'forecasts-layout',
     template: '#weather-forecasts-layout',
@@ -83,11 +78,9 @@ App.module('WeatherApp.Weather',
       $( '#weekly-forecast-btn' ).toggleClass( 'current' );
       this.trigger( 'forecasts:switch:hourly' );
     }
-
   });
 
   // DailyForecast ------------------------------------------------------------
-  // The forecast for a single day (singleton for DailyForecasts)
   Weather.DailyForecast = Marionette.ItemView.extend({
     tagName: 'li',
     template: '#weather-daily-forecast',
@@ -107,11 +100,9 @@ App.module('WeatherApp.Weather',
         this.$el.fadeIn( 1000 );
       }
     }
-
   });
 
   // DailyForecasts -----------------------------------------------------------
-  // The forecast for a week
   Weather.DailyForecasts = Marionette.CompositeView.extend({
     id: 'daily-forecasts',
     template: '#weather-daily-forecasts',
@@ -124,7 +115,6 @@ App.module('WeatherApp.Weather',
         this.$el.fadeIn( 1000 );
       }
     }
-
   });
 
   // HourlyForecast -----------------------------------------------------------
@@ -146,11 +136,9 @@ App.module('WeatherApp.Weather',
         this.$el.fadeIn( 1000 );
       }
     }
-
   });
 
   // Times --------------------------------------------------------------------
-  // Displays the location's time and local time.
   Weather.Times = Marionette.ItemView.extend({
     id: 'times',
     template: '#weather-times',
@@ -219,11 +207,9 @@ App.module('WeatherApp.Weather',
       this.model.set('locationTime', moment().zone( obj.tzOffset * -1 ) );
       this.model.set('localTime', moment().local() );
     }
-
   });
 
   // CurrentWeather -----------------------------------------------------------
-  // Displays the current weather
   Weather.CurrentWeather = Marionette.ItemView.extend({
     template: '#weather-current-weather',
     id: 'current-weather',
@@ -234,7 +220,12 @@ App.module('WeatherApp.Weather',
         this.$el.fadeIn( 1000 );
       }
     }
+  });
 
+  // Error --------------------------------------------------------------------
+  Weather.ErrorView = Marionette.ItemView.extend({
+    id: 'error',
+    template: '#weather-error'
   });
 
 });

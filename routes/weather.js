@@ -16,8 +16,8 @@ router.get('/lat/:lat/lng/:lng', function(req, res) {
     lng = rp.lng;
 
   forecast.get(lat, lng, function (err, result, data) {
-    if (err) {
-      throw err;
+    if ( err ) {
+      console.error( err );
     }
     res.send( data );
   });

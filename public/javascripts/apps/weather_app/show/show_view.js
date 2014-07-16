@@ -1,6 +1,5 @@
 App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
 
-  // --------------------------------------------------------------------------
   // Layout View --------------------------------------------------------------
   Show.Layout = Marionette.LayoutView.extend({
     template: '#show-layout',
@@ -12,10 +11,8 @@ App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
       bottomLeftRegion:  '#bottom-left',
       bottomRightRegion: '#bottom-right'
     }
-
   });
 
-  // --------------------------------------------------------------------------
   // Index View ---------------------------------------------------------------
   Show.Index = Marionette.ItemView.extend({
     template: '#show-index',
@@ -83,7 +80,6 @@ App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
       $( 'body' ).off('mousemove', this.updateGradient);
       return Marionette.ItemView.prototype.remove.call( this );
     }
-
   });
 
 });
