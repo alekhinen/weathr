@@ -1,6 +1,8 @@
 App.module('WeatherApp.Weather.Requests',
   function (Requests, App, Backbone, Marionette, $, _) {
 
+  'use strict';
+
   // --------------------------------------------------------------------------
   // Handles all requests (GET, POST, PUT, DELETE) to server for the weather
   // controller.

@@ -13,7 +13,7 @@ App.module('WeatherApp',
       WeatherApp.Show.Controller.showIndex();
     },
     weather: function( location ) {
-      WeatherApp.Weather.Controller.showWeather(location);
+      WeatherApp.Weather.Controller.initialize( location );
     }
   };
 
