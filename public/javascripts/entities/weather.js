@@ -42,7 +42,8 @@ App.module('Entities', function (Entities, App, Backbone, Marionette, $, _) {
       icon: 'clear-day',
       summary: 'Clear',
       temperature: 72,
-      time: moment().local()
+      time: moment().local(),
+      tzOffset: -4
     }
   });
 
