@@ -61,7 +61,7 @@ module.exports = {
       undef: true,
       // more allowed globals
       globals: {
-        Ash: true,
+        App: true,
         getFixture: true,
         basepath: true,
         describe: true,

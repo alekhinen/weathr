@@ -9,7 +9,16 @@ module.exports = function(grunt) {
     lintspaces: require('./build/config/lintspaces'),
 
     // SASS
-    sass: require('./build/config/sass')
+    sass: require('./build/config/sass'),
+
+    // concat test files
+    concat: require('./build/config/concat'),
+
+    // test server
+    connect: require('./build/config/connect'),
+
+    // tests
+    'mocha_phantomjs': require('./build/config/mocha')
 
   });
 
