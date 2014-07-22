@@ -7,6 +7,7 @@ module.exports = {
       'public/javascripts/apps/weather_app/show/show_view.js',
       'public/javascripts/apps/weather_app/show/show_controller.js',
       'public/javascripts/apps/weather_app/weather/requests.js',
+      'public/javascripts/apps/weather_app/weather/weather_gradient.js',
       'public/javascripts/apps/weather_app/weather/weather_view.js',
       'public/javascripts/apps/weather_app/weather/weather_creator.js',
       'public/javascripts/apps/weather_app/weather/weather_controller.js'

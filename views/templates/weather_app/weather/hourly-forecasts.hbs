@@ -1,4 +1,7 @@
 <script type="template" id="weather-hourly-forecasts">
   <p class="small"> <%= summary %> </p>
-  <ul id="hourly-forecast-list"></ul>
+  <canvas id="hourly-chart" width="400" height="280"></canvas>
+  <div class="hourly-forecast-list-container" id="styled-scrollbar">
+    <ul id="hourly-forecast-list"></ul>
+  </div>
 </script>
