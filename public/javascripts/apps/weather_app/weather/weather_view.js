@@ -246,7 +246,7 @@ App.module('WeatherApp.Weather',
       } else if ( 0 <= sunriseDiff && sunriseDiff <= 3600 ) {
         // TRANSITION ( sunrise -> day ) | 60 minutes
         console.log('sunrise transition into day'); // DEBUG
-        // sunriseDiff = Math.round( (sunriseDiff / 3600) * 100 ) / 100;
+        sunriseDiff = Math.round( (sunriseDiff / 3600) * 100 ) / 100;
         s1.update( 0, dayToSetS.at( 1 - sunriseDiff ) );
         s3.update( 1, dayToSetP.at( 1 - sunriseDiff ) );
 
