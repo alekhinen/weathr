@@ -98,6 +98,7 @@ App.module('WeatherApp.Weather',
       });
       forecastsL.on( 'forecasts:switch:hourly', function( v ) {
         hourlyForecastsV = wc.newHourlyForecastsView( weatherData );
+        console.log( hourlyForecastsV );
         forecastsL.fcRegion.show( hourlyForecastsV );
       });
 
