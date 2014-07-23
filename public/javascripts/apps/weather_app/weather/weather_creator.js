@@ -39,6 +39,14 @@ App.module('WeatherApp.Weather',
 
     // HourlyForecasts --------------------------------------------------------
     newHourlyForecastsView: function( weatherData ) {
+      var i = 0;
+      var wdLen = weatherData.hourly.data.length;
+
+      // Set the tzOffset for each hourly data.
+      for ( ; i < wdLen; i++ ) {
+        weatherData.hourly.data[ i ].tzOffset = weatherData.offset * -1;
+      }
+
       return new Weather.HourlyForecasts({
         collection: new App.Entities.HourlyForecasts( weatherData.hourly.data ),
         model: new App.Entities.TimelyForecast({

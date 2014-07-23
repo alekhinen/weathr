@@ -343,6 +343,105 @@ App.module('WeatherApp.Weather.Requests',
 App.module('WeatherApp.Weather',
   function (Weather, App, Backbone, Marionette, $, _) {
 
+  Weather.createResponsiveGradient = function( cur, sunrise, sunset ) {
+    var s1, s2, s3, dayToSetP, dayToSetS, setToNightP, setToNightS, p, s;
+
+    // set color objects ------------------------------------------------------
+    p = {
+      day: 'rgb(97,155,215)',
+      set: '#EC8648',
+      night: 'rgb(54,81,180)'
+    };
+    s = {
+      day: 'rgb(192,188,116)',
+      set: '#FCEA84',
+      night: 'rgb(10,25,52)'
+    };
+
+    // create SVG colors that morph into each other ---------------------------
+    // day -> sunset (primary)
+    dayToSetP = new SVG.Color( p.day ).morph( p.set );
+    // day -> sunset (secondary)
+    dayToSetS = new SVG.Color( s.day ).morph( s.set );
+    // sunset -> night (primary)
+    setToNightP = new SVG.Color( p.set ).morph( p.night );
+    // sunset -> night (secondary)
+    setToNightS = new SVG.Color( s.set ).morph( s.night );
+
+    // if the scene already has an SVG element, don't draw another one.
+    if ( !window.draw ) {
+      window.draw = SVG('super-container').size('100%', '100%');
+    }
+
+    // by default, gradient is at daytime.
+    window.gradient = draw.gradient('radial', function(stop) {
+      s1 = stop.at(0, dayToSetS.at(0));
+      s3 = stop.at(1, dayToSetP.at(0));
+    });
+
+    // shift sunrise by 300 seconds.
+    var sunriseDiff = cur - (sunrise - 300);
+    // shift sunset by 600 seconds so that lighting is more realistic
+    var sunsetDiff = (sunset - 600) - cur;
+
+
+    if ( 0 <= sunsetDiff && sunsetDiff <= 3600 ) {
+      // TRANSITION ( day -> sunset ) | 60 minutes
+      // console.log('day transition into sunset'); // DEBUG
+      sunsetDiff = Math.round( (sunsetDiff / 3600) * 100 ) / 100;
+      s1.update( 0, dayToSetS.at( 1 - sunsetDiff ) );
+      s3.update( 1, dayToSetP.at( 1 - sunsetDiff ) );
+
+    } else if ( -1800 <= sunsetDiff && sunsetDiff < 0 ) {
+      // TRANSITION ( sunset -> night ) | 30 minutes
+      // console.log('sunset transition into night'); // DEBUG
+      sunsetDiff = Math.abs( sunsetDiff );
+      sunsetDiff = Math.round( (sunsetDiff / 1800) * 100 ) / 100;
+      s1.update( 0, setToNightS.at( sunsetDiff ) );
+      s3.update( 1, setToNightP.at( sunsetDiff ) );
+
+    } else if ( -1800 <= sunriseDiff && sunriseDiff < 0 ) {
+      // TRANSITION ( night -> sunrise ) | 30 minutes
+      // console.log('night transition into sunrise'); // DEBUG
+      sunriseDiff = Math.abs( sunriseDiff );
+      sunriseDiff = Math.round( (sunriseDiff / 1800) * 100 ) / 100;
+      s1.update( 0, setToNightS.at( sunriseDiff ) );
+      s3.update( 1, setToNightP.at( sunriseDiff ) );
+
+    } else if ( 0 <= sunriseDiff && sunriseDiff <= 3600 ) {
+      // TRANSITION ( sunrise -> day ) | 60 minutes
+      console.log('sunrise transition into day'); // DEBUG
+      sunriseDiff = Math.round( (sunriseDiff / 3600) * 100 ) / 100;
+      s1.update( 0, dayToSetS.at( 1 - sunriseDiff ) );
+      s3.update( 1, dayToSetP.at( 1 - sunriseDiff ) );
+
+    } else if ( (sunrise < cur) && (cur < sunset) ) {
+      // day
+      // console.log('daytime'); // DEBUG
+      s1.update( 0, dayToSetS.at(0) );
+      s3.update( 1, dayToSetP.at(0) );
+
+    } else {
+      // night
+      // console.log('nighttime'); // DEBUG
+      s1.update( 0, setToNightS.at(1) );
+      s3.update( 1, setToNightP.at(1) );
+    }
+
+    if ( window.rect ) {
+      window.rect.fill( gradient );
+    } else {
+      window.rect = draw.rect('200%', '200%').attr({
+        fill: gradient
+      });
+    }
+  };
+
+});
+
+App.module('WeatherApp.Weather',
+  function (Weather, App, Backbone, Marionette, $, _) {
+
   // Layout -------------------------------------------------------------------
   Weather.Layout = Marionette.LayoutView.extend({
     template: '#weather-layout',
@@ -456,7 +555,53 @@ App.module('WeatherApp.Weather',
         this.$el.fadeOut( 0 );
         this.$el.fadeIn( 1000 );
       }
+      this.initGraph( $( this.$el ).children()[ 1 ] );
+    },
+
+    initGraph: function( ctx ) {
+      var timeLabel = [], highs = [], lows = [], mTime, mHigh, mLow;
+
+      this.collection.each( function( model ) {
+        mTime = model.get('sunriseTime');
+        mHigh = Math.round( model.get('temperatureMax') );
+        mLow  = Math.round( model.get('temperatureMin') );
+        mTime = moment.unix( mTime ).format('dddd');
+
+        timeLabel.push( mTime );
+        highs.push( mHigh );
+        lows.push( mLow );
+      });
+
+      var data = {
+        labels: timeLabel,
+        datasets: [
+          {
+            label: 'Daily High',
+            fillColor: 'rgba(220,220,220,0.2)',
+            strokeColor: 'rgba(220,220,220,1)',
+            pointColor: 'rgba(220,220,220,1)',
+            pointStrokeColor: '#fff',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(220,220,220,1)',
+            data: highs
+          },
+          {
+            label: 'Daily Low',
+            fillColor: 'rgba(85,155,186,0.2)',
+            strokeColor: 'rgba(85,155,186,1)',
+            pointColor: 'rgba(85,155,186,1)',
+            pointStrokeColor: '#fff',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(85,155,186,1)',
+            data: lows
+          }
+        ]
+      };
+
+      ctx = $( ctx ).get(0).getContext('2d');
+      var hourlyChart = new Chart(ctx).Line( data );
     }
+
   });
 
   // HourlyForecast -----------------------------------------------------------
@@ -477,7 +622,45 @@ App.module('WeatherApp.Weather',
         this.$el.fadeOut( 0 );
         this.$el.fadeIn( 1000 );
       }
+      this.initGraph( $( this.$el ).children()[ 1 ] );
+    },
+
+    initGraph: function( ctx ) {
+      var timeLabel = [], tempData = [], i = 0, mTime, mTz, mTemp;
+
+      this.collection.each( function( model ) {
+        if ( i <= 12 ) {
+          mTime = model.get('time');
+          mTz   = model.get('tzOffset');
+          mTemp = model.get('temperature');
+          mTime = moment.unix( mTime ).zone( mTz ).format('h:mm a');
+
+          timeLabel.push( mTime );
+          tempData.push( mTemp );
+          i++;
+        }
+      });
+
+      var data = {
+        labels: timeLabel,
+        datasets: [
+          {
+            label: 'My First dataset',
+            fillColor: 'rgba(220,220,220,0.2)',
+            strokeColor: 'rgba(220,220,220,1)',
+            pointColor: 'rgba(220,220,220,1)',
+            pointStrokeColor: '#fff',
+            pointHighlightFill: '#fff',
+            pointHighlightStroke: 'rgba(220,220,220,1)',
+            data: tempData
+          }
+        ]
+      };
+
+      ctx = $( ctx ).get(0).getContext('2d');
+      var hourlyChart = new Chart(ctx).Line( data );
     }
+
   });
 
   // Times --------------------------------------------------------------------
@@ -495,16 +678,12 @@ App.module('WeatherApp.Weather',
       this.timer = setInterval( function() {
         self.updateTime( self.model.toJSON() );
       }, 1000 );
-      this.renderGradient(); // immediate gradient render
+      this.renderGradient();
       this.gradienter = setInterval( function() {
         self.renderGradient();
       }, 60000 );
       this.initialFadeIn();
       console.log( this );
-    },
-
-    onRender: function() {
-      // this.updateTime(); // immediate time update (breaks onload)
     },
 
     initialFadeIn: function() {
@@ -515,103 +694,13 @@ App.module('WeatherApp.Weather',
     },
 
     renderGradient: function() {
-      var s1, s2, s3,
-        sunrise, sunset, currentTime,
-        dayToSetP, dayToSetS, setToNightP, setToNightS, p, s;
-
+      var sunrise, sunset, currentTime;
       // Get times.
       sunrise     = this.model.get('sunrise').unix(),
       sunset      = this.model.get('sunset').unix(),
       currentTime = this.model.get('locationTime').unix();
 
-      // Set colors.
-      p = {
-        day: 'rgb(97,155,215)',
-        set: '#EC8648',
-        night: 'rgb(54,81,180)'
-      };
-      s = {
-        day: 'rgb(192,188,116)',
-        set: '#FCEA84',
-        night: 'rgb(10,25,52)'
-      };
-
-      // day -> sunset (primary)
-      dayToSetP = new SVG.Color( p.day ).morph( p.set );
-      // day -> sunset (secondary)
-      dayToSetS = new SVG.Color( s.day ).morph( s.set );
-      // sunset -> night (primary)
-      setToNightP = new SVG.Color( p.set ).morph( p.night );
-      // sunset -> night (secondary)
-      setToNightS = new SVG.Color( s.set ).morph( s.night );
-
-      // If the scene already has an SVG element, don't draw another one.
-      if ( !window.draw ) {
-        window.draw = SVG('super-container').size('100%', '100%');
-      }
-
-      // By default, gradient is at daytime.
-      window.gradient = draw.gradient('radial', function(stop) {
-        s1 = stop.at(0, dayToSetS.at(0));
-        s3 = stop.at(1, dayToSetP.at(0));
-      });
-
-      // shift sunrise by 300 seconds.
-      var sunriseDiff = currentTime - (sunrise - 300);
-      // shift sunset by 600 seconds so that lighting is more realistic
-      var sunsetDiff = (sunset - 600) - currentTime;
-
-
-      if ( 0 <= sunsetDiff && sunsetDiff <= 3600 ) {
-        // TRANSITION ( day -> sunset ) | 60 minutes
-        // console.log('day transition into sunset'); // DEBUG
-        sunsetDiff = Math.round( (sunsetDiff / 3600) * 100 ) / 100;
-        s1.update( 0, dayToSetS.at( 1 - sunsetDiff ) );
-        s3.update( 1, dayToSetP.at( 1 - sunsetDiff ) );
-
-      } else if ( -1800 <= sunsetDiff && sunsetDiff < 0 ) {
-        // TRANSITION ( sunset -> night ) | 30 minutes
-        // console.log('sunset transition into night'); // DEBUG
-        sunsetDiff = Math.abs( sunsetDiff );
-        sunsetDiff = Math.round( (sunsetDiff / 1800) * 100 ) / 100;
-        s1.update( 0, setToNightS.at( sunsetDiff ) );
-        s3.update( 1, setToNightP.at( sunsetDiff ) );
-
-      } else if ( -1800 <= sunriseDiff && sunriseDiff < 0 ) {
-        // TRANSITION ( night -> sunrise ) | 30 minutes
-        // console.log('night transition into sunrise'); // DEBUG
-        sunriseDiff = Math.abs( sunriseDiff );
-        sunriseDiff = Math.round( (sunriseDiff / 1800) * 100 ) / 100;
-        s1.update( 0, setToNightS.at( sunriseDiff ) );
-        s3.update( 1, setToNightP.at( sunriseDiff ) );
-
-      } else if ( 0 <= sunriseDiff && sunriseDiff <= 3600 ) {
-        // TRANSITION ( sunrise -> day ) | 60 minutes
-        console.log('sunrise transition into day'); // DEBUG
-        sunriseDiff = Math.round( (sunriseDiff / 3600) * 100 ) / 100;
-        s1.update( 0, dayToSetS.at( 1 - sunriseDiff ) );
-        s3.update( 1, dayToSetP.at( 1 - sunriseDiff ) );
-
-      } else if ( (sunrise < currentTime) && (currentTime < sunset) ) {
-        // day
-        // console.log('daytime'); // DEBUG
-        s1.update( 0, dayToSetS.at(0) );
-        s3.update( 1, dayToSetP.at(0) );
-
-      } else {
-        // night
-        // console.log('nighttime'); // DEBUG
-        s1.update( 0, setToNightS.at(1) );
-        s3.update( 1, setToNightP.at(1) );
-      }
-
-      if ( window.rect ) {
-        window.rect.fill( gradient );
-      } else {
-        window.rect = draw.rect('200%', '200%').attr({
-          fill: gradient
-        });
-      }
+      Weather.createResponsiveGradient( currentTime, sunrise, sunset );
     },
 
     updateTime: function( obj ) {
@@ -688,6 +777,14 @@ App.module('WeatherApp.Weather',
 
     // HourlyForecasts --------------------------------------------------------
     newHourlyForecastsView: function( weatherData ) {
+      var i = 0;
+      var wdLen = weatherData.hourly.data.length;
+
+      // Set the tzOffset for each hourly data.
+      for ( ; i < wdLen; i++ ) {
+        weatherData.hourly.data[ i ].tzOffset = weatherData.offset * -1;
+      }
+
       return new Weather.HourlyForecasts({
         collection: new App.Entities.HourlyForecasts( weatherData.hourly.data ),
         model: new App.Entities.TimelyForecast({

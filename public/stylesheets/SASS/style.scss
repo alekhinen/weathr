@@ -17,6 +17,7 @@ body {
 
 
 
+
 // typography -----------------------------------------------------------------
 a {
   color: white;
@@ -52,6 +53,7 @@ a {
 
 
 
+
 // app-wide styling -----------------------------------------------------------
 #super-container {
   position: absolute;
@@ -59,8 +61,8 @@ a {
   left: 0px;
   bottom: 0px;
   right: 0px;
-  min-width: 900px;
-  min-height: 500px;
+  min-width: 1200px;
+  min-height: 700px;
   overflow: hidden;
 }
 
@@ -120,6 +122,8 @@ a {
 
 
 
+
+
 // weather-show-recent-searches -----------------------------------------------
 #recent-searches {
   background: rgba(0, 0, 0, 0.2);
@@ -151,13 +155,15 @@ a {
 
 
 
+
+
 // weather-forecasts-layout ---------------------------------------------------
 #forecasts-layout {
   background: rgba(0, 0, 0, 0.2);
   padding: 21px;
   padding-top: 9px;
-  padding-bottom: 9px;
-  width: 280px;
+  padding-bottom: 0px;
+  width: 442px;
 
   h4 {
     float: left;
@@ -195,7 +201,9 @@ a {
 
 
 
-// weather-daily-forecasts ----------------------------------------------------
+
+
+// weather-daily-forecasts / weather-hourly-forecasts -------------------------
 #daily-forecasts {
 
   .more-info {
@@ -225,9 +233,6 @@ a {
     background: rgba(0,0,0,0);
     position: relative;
 
-    -webkit-box-shadow: inset 0px 10px 20px -15px rgba(0, 0, 0, 0.3);;
-    box-shadow: inset 0px 10px 20px -15px rgba(0, 0, 0, 0.3);;
-
     -webkit-transition: 500ms;
     transition: 500ms;
 
@@ -250,20 +255,14 @@ a {
 
 }
 
-#hourly-forecast-list {
-
-  .date {
-    font-size: 12px;
-    margin-top: 2px;
-  }
-}
-
 .daily-container, .hourly-container {
   position: relative;
   padding: 21px;
   padding-bottom: 9px;
   padding-top: 9px;
+}
 
+.daily-container {
   .date {
     position: absolute;
     margin-top: 2px;
@@ -280,6 +279,78 @@ a {
   }
 }
 
+.hourly-forecast-list-container {
+  width: 442px;
+  margin-left: -21px;
+  margin-right: -21px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  padding: 0px;
+  -webkit-box-shadow: inset 0px 10px 15px -15px rgba(0, 0, 0, 0.75);
+  box-shadow: inset 0px 10px 15px -15px rgba(0, 0, 0, 0.75);
+}
+
+#styled-scrollbar::-webkit-scrollbar-track {
+  // -webkit-box-shadow: inset 0px 1px 20px -20px rgba(0,0,0,1);
+  border-radius: 0px;
+  background-color: rgba(255,255,255,0.1);
+}
+
+#styled-scrollbar::-webkit-scrollbar {
+  width: 12px;
+  background-color: rgba(255,255,255,0.1);
+}
+
+#styled-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 0px;
+  background-color: rgba(255,255,255,0.75);
+}
+
+#hourly-forecast-list {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 60px;
+  width: 6000px;
+  margin: 0px;
+
+  li {
+    display: block;
+    height: 100%;
+    width: 125px;
+    float: left;
+  }
+}
+
+.hourly-container {
+  font-size: 12px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+
+  .date {
+    font-size: 12px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+  }
+
+  .step {
+    position: relative;
+    display: block;
+    margin: auto;
+    float: left;
+    font-size: 30px;
+  }
+
+  .high-low {
+    position: relative;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: right;
+    padding-top: 4px;
+  }
+}
 
 // weather-show-current-weather -----------------------------------------------
 #current-weather {
