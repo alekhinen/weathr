@@ -1,4 +1,5 @@
 # Weathr
+[![Build Status](https://travis-ci.org/alekhinen/weathr.svg?branch=develop)](https://travis-ci.org/alekhinen/weathr)
 Another weather app built with a node + express + backbone + marionette stack.
 
 ## Core Features
