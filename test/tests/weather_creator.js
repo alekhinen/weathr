@@ -25,38 +25,53 @@ var wd = {
   }
 };
 var gl = {
-  address_components: [],
+  address_components: [{
+    types: []
+  }],
   formatted_address: 'Boston, MA, USA'
 };
 
+var expected;
+
+// There's not much to hook into for testing views.
 describe( 'Testing weather creators.', function() {
 
   // weather layout -----------------------------------------------------------
   it( 'should create Weather layout', function() {
-    assert.ok( wc.newLayoutView(), new App.WeatherApp.Weather.Layout() );
+    expected = wc.newLayoutView();
+
+    assert.isObject( expected.centerRegion );
+    assert.isObject( expected.topLeftRegion );
+    assert.isObject( expected.topRightRegion );
+    assert.isObject( expected.bottomLeftRegion );
+    assert.isObject( expected.bottomRightRegion );
   });
 
   // forecasts layout ---------------------------------------------------------
   it( 'should create Forecasts layout', function() {
-    assert.ok( wc.newForecastsLayout(),
-      new App.WeatherApp.Weather.ForecastsLayout() );
+    expected = wc.newForecastsLayout();
+
+    assert.isObject( expected.fcRegion );
   });
 
   // error view ---------------------------------------------------------------
   it( 'should create Error View', function() {
-    assert.ok( wc.newErrorView(),
-      new App.WeatherApp.Weather.ErrorView() );
+    expected = wc.newErrorView();
+
+    assert.equal( expected.el.id, 'error' );
   });
 
   // recent searches ----------------------------------------------------------
   it( 'should create Recent Searches View', function() {
-    assert.ok( wc.newRecentSearchesView(),
-      new App.WeatherApp.Weather.RecentSearches() );
+    expected = wc.newRecentSearchesView();
+
+    assert.equal( expected.childViewContainer, '#recent-searches-list' );
+    assert.equal( expected.childView, App.WeatherApp.Weather.RecentSearch );
   });
 
   // recent searches (data) ---------------------------------------------------
   it( 'should create Recent Searches View with data', function() {
-    assert.ok( wc.newRecentSearchesView([
+    expected = wc.newRecentSearchesView([
       {
         locationURL: 'current',
         formattedLocation: 'Boston, MA'
@@ -64,41 +79,40 @@ describe( 'Testing weather creators.', function() {
       {
         locationURL: 'seattle,+wa',
         formattedLocation: 'Seattle, WA'
-      }]),
-      new App.WeatherApp.Weather.RecentSearches([
-        {
-          locationURL: 'current',
-          formattedLocation: 'Boston, MA'
-        },
-        {
-          locationURL: 'seattle,+wa',
-          formattedLocation: 'Seattle, WA'
-        }]) );
+      }]);
+
+    assert.equal( expected.collection.length, 2 );
   });
 
   // daily forecasts ----------------------------------------------------------
   it( 'should create Daily Forecasts View', function() {
-    assert.ok( wc.newDailyForecastsView( wd ),
-      new App.WeatherApp.Weather.DailyForecasts( wd ) );
+    expected = wc.newDailyForecastsView( wd );
+
+    assert.equal( expected.childView, App.WeatherApp.Weather.DailyForecast );
+    assert.equal( expected.childViewContainer, '#daily-forecast-list' );
   });
 
   // hourly forecasts ---------------------------------------------------------
   it( 'should create Hourly Forecasts View', function() {
-    assert.ok( wc.newHourlyForecastsView( wd ),
-      new App.WeatherApp.Weather.HourlyForecasts( wd ) );
+    expected = wc.newHourlyForecastsView( wd );
+
+    assert.equal( expected.childView, App.WeatherApp.Weather.HourlyForecast );
+    assert.equal( expected.childViewContainer, '#hourly-forecast-list' );
   });
 
   // times --------------------------------------------------------------------
   // does not work because svg.js is incompatible with phantomjs.
   // it( 'should create Times View', function() {
-  //   assert.ok( wc.newTimesView( wd, gl ),
-  //     new App.WeatherApp.Weather.Times( wd, gl ));
+  //   expected = wc.newTimesView( wd, gl );
+
+  //   assert.equal( expected.template, '#weather-times' );
   // });
 
   // current weather ----------------------------------------------------------
   it( 'should create Hourly Forecasts View', function() {
-    assert.ok( wc.newCurrentWeatherView( wd ),
-      new App.WeatherApp.Weather.CurrentWeather( wd ) );
+    var expected = wc.newCurrentWeatherView( wd );
+
+    assert.equal( expected.template, '#weather-current-weather' );
   });
 
 });
