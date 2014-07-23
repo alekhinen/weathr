@@ -3,13 +3,18 @@ Another weather app built with a node + express + backbone + marionette stack.
 
 ## Core Features
 #### Search
-![Index Page](/docs/assets/index.png?raw=true "Index Page")
 Search for any location on the planet or for your current location.
+![Index Page](/docs/assets/index.png?raw=true "Index Page")
 
 #### Weather
+Get accurate forecast data for the week.
 ![Nighttime Weather](/docs/assets/night_weather.png?raw=true "Weather at night.")
-Get accurate forecast data for any location in the world.
+And for the day.
 ![Daytime Weather](/docs/assets/day_weather.png?raw=true "Weather during the day.")
+Search any location in the world.
+![Sunset Weather](/docs/assets/sunset_weather.png?raw=true "Weather during sunset.")
+![Sunrise Weather](/docs/assets/sunrise_weather.png?raw=true "Weather during sunrise.")
+
 
 ## Credits
 - [Forecast.io](https://developer.forecast.io/)
@@ -17,3 +22,5 @@ Get accurate forecast data for any location in the world.
 - [Express](http://expressjs.com/)
 - [Backbone](http://backbonejs.org/)
 - [Marionette](http://marionettejs.com/)
+- [SVG.js](http://svgjs.com)
+- [Chart.js](http://chartjs.org)
