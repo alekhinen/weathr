@@ -146,7 +146,6 @@ a {
 
 #daily-forecast-list, #hourly-forecast-list {
   max-height: 488px;
-  overflow: scroll;
   margin-left: -21px;
   margin-right: -21px;
   min-width: 100%;
@@ -209,7 +208,6 @@ a {
   background-color: rgba(255, 255, 255, 0.75); }
 
 #hourly-forecast-list {
-  overflow-x: scroll;
   overflow-y: hidden;
   height: 60px;
   width: 6000px;
