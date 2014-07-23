@@ -83,6 +83,12 @@ App.module('Entities', function (Entities, App, Backbone, Marionette, $, _) {
       sunrise: moment().startOf('day').add('h', 6),
       sunset: moment().endOf('day').subtract('h', 3),
       location: 'New York'
+    },
+
+    // Updates locationTime and localTime to the current time.
+    updateTime: function() {
+      this.set( 'locationTime', moment().zone( this.get('tzOffset') * -1 ) );
+      this.set( 'localTime', moment().local() );
     }
   });
 
@@ -133,6 +139,148 @@ App.module('WeatherApp',
 
 });
 
+App.module('WeatherApp.Colors',
+  function (Colors, App, Backbone, Marionette, $, _) {
+
+  // Gradients ----------------------------------------------------------------
+  // colors used for the various gradients
+  Colors.Gradients = {
+    day: {
+      prim: 'rgb(97,155,215)',
+      secnd: 'rgb(192,188,116)'
+    },
+    sunset: {
+      prim: 'rgb(236,134,72)',
+      secnd: 'rgb(252,234,132)'
+    },
+    night: {
+      prim: 'rgb(54,81,180)',
+      secnd: 'rgb(10,25,52)'
+    },
+    sunrise: {
+      prim: 'rgb(236,134,72)',
+      secnd: 'rgb(252,234,132)'
+    }
+  };
+
+  // createMouseMovementGradient() --------------------------------------------
+  // creates a gradient based off of mouse movements.
+  Colors.createMouseMovementGradient = function( e ) {
+    var percX, percY, g, colors;
+
+    g = Colors.Gradients;
+
+    // Get a percentage value of where the mouse is.
+    percX = Math.round( ( e.pageX / $(document).width() ) * 100 ) / 100;
+    percY = Math.round( ( e.pageY / $(document).height() ) * 100 ) / 100;
+
+    // Set the colors into an SVG.
+    colors = {
+      primary: new SVG.Color( g.day.prim ),
+      secondary: new SVG.Color( g.day.secnd )
+    };
+
+    // Set colors based on mouse position of page.
+    var dayToSetP = new SVG.Color( g.day.prim ).morph( g.sunset.prim );
+    var dayToSetS = new SVG.Color( g.day.secnd ).morph( g.sunset.secnd );
+    var setToNightP = new SVG.Color( g.sunset.prim ).morph( g.night.prim );
+    var setToNightS = new SVG.Color( g.sunset.secnd ).morph( g.night.secnd );
+
+    if ( percX <= 0.5 ) {
+      percX = Math.round( (percX / 0.5) * 100 ) / 100;
+      colors.primary = dayToSetP.at( percX );
+    } else if ( percX > 0.5 ) {
+      percX = Math.round( ( (percX - 0.5) / 0.5 ) * 100 ) / 100;
+      colors.primary = setToNightP.at( percX );
+    }
+
+    if ( percY <= 0.5 ) {
+      percY = Math.round( (percY / 0.5) * 100 ) / 100;
+      colors.secondary = dayToSetS.at( percY );
+    } else if ( percY > 0.5 ) {
+      percY = Math.round( ( (percY - 0.5) / 0.5 ) * 100 ) / 100;
+      colors.secondary = setToNightS.at( percY );
+    }
+
+    return colors;
+  };
+
+  // createTimeBasedGradient() ------------------------------------------------
+  // creates a gradient based off of time of day.
+  Colors.createTimeBasedGradient = function( cur, sunrise, sunset ) {
+    var dayToSetP, dayToSetS, setToNightP, setToNightS, g, colors;
+
+    g = Colors.Gradients;
+
+    // create SVG colors that morph into each other
+    // day -> sunset (primary)
+    dayToSetP = new SVG.Color( g.day.prim ).morph( g.sunset.prim );
+    // day -> sunset (secondary)
+    dayToSetS = new SVG.Color( g.day.secnd ).morph( g.sunset.secnd );
+    // sunset -> night (primary)
+    setToNightP = new SVG.Color( g.sunset.prim ).morph( g.night.prim );
+    // sunset -> night (secondary)
+    setToNightS = new SVG.Color( g.sunset.secnd ).morph( g.night.secnd );
+
+    // by default, gradient is at daytime.
+    colors = {
+      primary: dayToSetP.at( 0 ),
+      secondary: dayToSetS.at( 0 )
+    };
+
+    // shift sunrise by 300 seconds (for realistic lighting)
+    var sunriseDiff = cur - (sunrise - 300);
+    // shift sunset by 600 seconds (for realistic lighting)
+    var sunsetDiff = (sunset - 600) - cur;
+
+    if ( 0 <= sunsetDiff && sunsetDiff <= 3600 ) {
+      // TRANSITION ( day -> sunset ) | 60 minutes
+      // diff increments as time goes on.
+      sunsetDiff = Math.round( (sunsetDiff / 3600) * 100 ) / 100;
+      colors.primary   = dayToSetP.at( 1 - sunsetDiff );
+      colors.secondary = dayToSetS.at( 1 - sunsetDiff );
+
+    } else if ( -1800 <= sunsetDiff && sunsetDiff < 0 ) {
+      // TRANSITION ( sunset -> night ) | 30 minutes
+      // diff increments as time goes on.
+      sunsetDiff = Math.abs( sunsetDiff );
+      sunsetDiff = Math.round( (sunsetDiff / 1800) * 100 ) / 100;
+      colors.primary   = setToNightP.at( sunsetDiff );
+      colors.secondary = setToNightS.at( sunsetDiff );
+
+    } else if ( -1800 <= sunriseDiff && sunriseDiff < 0 ) {
+      // TRANSITION ( night -> sunrise ) | 30 minutes
+      // diff decrements as time goes on.
+      sunriseDiff = Math.abs( sunriseDiff );
+      sunriseDiff = Math.round( (sunriseDiff / 1800) * 100 ) / 100;
+      colors.primary   = setToNightP.at( sunriseDiff );
+      colors.secondary = setToNightS.at( sunriseDiff );
+
+    } else if ( 0 <= sunriseDiff && sunriseDiff <= 3600 ) {
+      // TRANSITION ( sunrise -> day ) | 60 minutes
+      // diff increments as time goes on.
+      sunriseDiff = Math.round( (sunriseDiff / 3600) * 100 ) / 100;
+      colors.primary   = dayToSetP.at( 1 - sunriseDiff );
+      colors.secondary = dayToSetS.at( 1 - sunriseDiff );
+
+
+    } else if ( (sunrise < cur) && (cur < sunset) ) {
+      // daytime
+      colors.primary   = dayToSetP.at(0);
+      colors.secondary = dayToSetS.at(0);
+
+    } else {
+      // nighttime
+      colors.primary   = setToNightP.at(1);
+      colors.secondary = setToNightS.at(1);
+
+    }
+
+    return colors;
+  };
+
+});
+
 App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
 
   // Layout View --------------------------------------------------------------
@@ -177,27 +325,11 @@ App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
     },
 
     updateGradient: function( e ) {
-      var pWidth, pHeight, mX, mY, percX, percY,
-        red, green, blue, max, col, col2;
+      var colors = App.WeatherApp.Colors.createMouseMovementGradient( e );
 
-      max = 255,
-      pWidth = $(document).width(),
-      pHeight = $(document).height(),
-      mX = e.pageX,
-      mY = e.pageY,
-      percX = Math.round( ((mX / pWidth) * 100) ),
-      percY = Math.round( ((mY / pHeight) * 100) );
-
-      red = Math.round(percX * 1.5),
-      green = Math.round(percY * 1.5);
-      blue = max - Math.round( ( (red + green) / 510 ) * 100 ) - 50;
-
-      col = new SVG.Color({ r: red, g: green, b: blue });
-      col2 = new SVG.Color({ r: 255, g: red, b: green });
-
-      gradient.update(function(stop) {
-        s1 = stop.at(0, col2);
-        s3 = stop.at(1, col);
+      window.gradient.update( function( stop ) {
+        stop.at( 0, colors.secondary );
+        stop.at( 1, colors.primary );
       });
     },
 
@@ -336,105 +468,6 @@ App.module('WeatherApp.Weather.Requests',
     });
 
     return result;
-  };
-
-});
-
-App.module('WeatherApp.Weather',
-  function (Weather, App, Backbone, Marionette, $, _) {
-
-  Weather.createResponsiveGradient = function( cur, sunrise, sunset ) {
-    var s1, s2, s3, dayToSetP, dayToSetS, setToNightP, setToNightS, p, s;
-
-    // set color objects ------------------------------------------------------
-    p = {
-      day: 'rgb(97,155,215)',
-      set: '#EC8648',
-      night: 'rgb(54,81,180)'
-    };
-    s = {
-      day: 'rgb(192,188,116)',
-      set: '#FCEA84',
-      night: 'rgb(10,25,52)'
-    };
-
-    // create SVG colors that morph into each other ---------------------------
-    // day -> sunset (primary)
-    dayToSetP = new SVG.Color( p.day ).morph( p.set );
-    // day -> sunset (secondary)
-    dayToSetS = new SVG.Color( s.day ).morph( s.set );
-    // sunset -> night (primary)
-    setToNightP = new SVG.Color( p.set ).morph( p.night );
-    // sunset -> night (secondary)
-    setToNightS = new SVG.Color( s.set ).morph( s.night );
-
-    // if the scene already has an SVG element, don't draw another one.
-    if ( !window.draw ) {
-      window.draw = SVG('super-container').size('100%', '100%');
-    }
-
-    // by default, gradient is at daytime.
-    window.gradient = draw.gradient('radial', function(stop) {
-      s1 = stop.at(0, dayToSetS.at(0));
-      s3 = stop.at(1, dayToSetP.at(0));
-    });
-
-    // shift sunrise by 300 seconds.
-    var sunriseDiff = cur - (sunrise - 300);
-    // shift sunset by 600 seconds so that lighting is more realistic
-    var sunsetDiff = (sunset - 600) - cur;
-
-
-    if ( 0 <= sunsetDiff && sunsetDiff <= 3600 ) {
-      // TRANSITION ( day -> sunset ) | 60 minutes
-      // console.log('day transition into sunset'); // DEBUG
-      sunsetDiff = Math.round( (sunsetDiff / 3600) * 100 ) / 100;
-      s1.update( 0, dayToSetS.at( 1 - sunsetDiff ) );
-      s3.update( 1, dayToSetP.at( 1 - sunsetDiff ) );
-
-    } else if ( -1800 <= sunsetDiff && sunsetDiff < 0 ) {
-      // TRANSITION ( sunset -> night ) | 30 minutes
-      // console.log('sunset transition into night'); // DEBUG
-      sunsetDiff = Math.abs( sunsetDiff );
-      sunsetDiff = Math.round( (sunsetDiff / 1800) * 100 ) / 100;
-      s1.update( 0, setToNightS.at( sunsetDiff ) );
-      s3.update( 1, setToNightP.at( sunsetDiff ) );
-
-    } else if ( -1800 <= sunriseDiff && sunriseDiff < 0 ) {
-      // TRANSITION ( night -> sunrise ) | 30 minutes
-      // console.log('night transition into sunrise'); // DEBUG
-      sunriseDiff = Math.abs( sunriseDiff );
-      sunriseDiff = Math.round( (sunriseDiff / 1800) * 100 ) / 100;
-      s1.update( 0, setToNightS.at( sunriseDiff ) );
-      s3.update( 1, setToNightP.at( sunriseDiff ) );
-
-    } else if ( 0 <= sunriseDiff && sunriseDiff <= 3600 ) {
-      // TRANSITION ( sunrise -> day ) | 60 minutes
-      console.log('sunrise transition into day'); // DEBUG
-      sunriseDiff = Math.round( (sunriseDiff / 3600) * 100 ) / 100;
-      s1.update( 0, dayToSetS.at( 1 - sunriseDiff ) );
-      s3.update( 1, dayToSetP.at( 1 - sunriseDiff ) );
-
-    } else if ( (sunrise < cur) && (cur < sunset) ) {
-      // day
-      // console.log('daytime'); // DEBUG
-      s1.update( 0, dayToSetS.at(0) );
-      s3.update( 1, dayToSetP.at(0) );
-
-    } else {
-      // night
-      // console.log('nighttime'); // DEBUG
-      s1.update( 0, setToNightS.at(1) );
-      s3.update( 1, setToNightP.at(1) );
-    }
-
-    if ( window.rect ) {
-      window.rect.fill( gradient );
-    } else {
-      window.rect = draw.rect('200%', '200%').attr({
-        fill: gradient
-      });
-    }
   };
 
 });
@@ -675,8 +708,9 @@ App.module('WeatherApp.Weather',
     initialize: function() {
       var self = this;
 
+      this.model.updateTime();
       this.timer = setInterval( function() {
-        self.updateTime( self.model.toJSON() );
+        self.model.updateTime();
       }, 1000 );
       this.renderGradient();
       this.gradienter = setInterval( function() {
@@ -694,18 +728,37 @@ App.module('WeatherApp.Weather',
     },
 
     renderGradient: function() {
-      var sunrise, sunset, currentTime;
-      // Get times.
-      sunrise     = this.model.get('sunrise').unix(),
-      sunset      = this.model.get('sunset').unix(),
-      currentTime = this.model.get('locationTime').unix();
+      var awc         = App.WeatherApp.Colors;
+      var sunrise     = this.model.get('sunrise').unix();
+      var sunset      = this.model.get('sunset').unix();
+      var currentTime = this.model.get('locationTime').unix();
 
-      Weather.createResponsiveGradient( currentTime, sunrise, sunset );
-    },
+      var colors = awc.createTimeBasedGradient( currentTime, sunrise, sunset );
 
-    updateTime: function( obj ) {
-      this.model.set('locationTime', moment().zone( obj.tzOffset * -1 ) );
-      this.model.set('localTime', moment().local() );
+      // if the scene already has an SVG element, don't draw another one.
+      if ( !window.draw ) {
+        window.draw = SVG('super-container').size('100%', '100%');
+      }
+
+      if ( !window.gradient ) {
+        window.gradient = draw.gradient( 'radial', function( stop ) {
+          stop.at( 0, colors.secondary );
+          stop.at( 1, colors.primary );
+        });
+      } else {
+        window.gradient.update( function( stop ) {
+          stop.at( 0, colors.secondary );
+          stop.at( 1, colors.primary );
+        });
+      }
+
+      if ( window.rect ) {
+        window.rect.fill( window.gradient );
+      } else {
+        window.rect = draw.rect('200%', '200%').attr({
+          fill: window.gradient
+        });
+      }
     },
 
     remove: function() {

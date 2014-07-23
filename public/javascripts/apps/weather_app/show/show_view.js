@@ -42,27 +42,11 @@ App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
     },
 
     updateGradient: function( e ) {
-      var pWidth, pHeight, mX, mY, percX, percY,
-        red, green, blue, max, col, col2;
+      var colors = App.WeatherApp.Colors.createMouseMovementGradient( e );
 
-      max = 255,
-      pWidth = $(document).width(),
-      pHeight = $(document).height(),
-      mX = e.pageX,
-      mY = e.pageY,
-      percX = Math.round( ((mX / pWidth) * 100) ),
-      percY = Math.round( ((mY / pHeight) * 100) );
-
-      red = Math.round(percX * 1.5),
-      green = Math.round(percY * 1.5);
-      blue = max - Math.round( ( (red + green) / 510 ) * 100 ) - 50;
-
-      col = new SVG.Color({ r: red, g: green, b: blue });
-      col2 = new SVG.Color({ r: 255, g: red, b: green });
-
-      gradient.update(function(stop) {
-        s1 = stop.at(0, col2);
-        s3 = stop.at(1, col);
+      window.gradient.update( function( stop ) {
+        stop.at( 0, colors.secondary );
+        stop.at( 1, colors.primary );
       });
     },
 

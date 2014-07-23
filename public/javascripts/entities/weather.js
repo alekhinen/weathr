@@ -62,6 +62,12 @@ App.module('Entities', function (Entities, App, Backbone, Marionette, $, _) {
       sunrise: moment().startOf('day').add('h', 6),
       sunset: moment().endOf('day').subtract('h', 3),
       location: 'New York'
+    },
+
+    // Updates locationTime and localTime to the current time.
+    updateTime: function() {
+      this.set( 'locationTime', moment().zone( this.get('tzOffset') * -1 ) );
+      this.set( 'localTime', moment().local() );
     }
   });
 
