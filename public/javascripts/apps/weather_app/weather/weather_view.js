@@ -234,8 +234,9 @@ App.module('WeatherApp.Weather',
     initialize: function() {
       var self = this;
 
+      this.model.updateTime();
       this.timer = setInterval( function() {
-        self.updateTime( self.model.toJSON() );
+        self.model.updateTime();
       }, 1000 );
       this.renderGradient();
       this.gradienter = setInterval( function() {
@@ -253,18 +254,37 @@ App.module('WeatherApp.Weather',
     },
 
     renderGradient: function() {
-      var sunrise, sunset, currentTime;
-      // Get times.
-      sunrise     = this.model.get('sunrise').unix(),
-      sunset      = this.model.get('sunset').unix(),
-      currentTime = this.model.get('locationTime').unix();
+      var awc         = App.WeatherApp.Colors;
+      var sunrise     = this.model.get('sunrise').unix();
+      var sunset      = this.model.get('sunset').unix();
+      var currentTime = this.model.get('locationTime').unix();
 
-      Weather.createResponsiveGradient( currentTime, sunrise, sunset );
-    },
+      var colors = awc.createTimeBasedGradient( currentTime, sunrise, sunset );
 
-    updateTime: function( obj ) {
-      this.model.set('locationTime', moment().zone( obj.tzOffset * -1 ) );
-      this.model.set('localTime', moment().local() );
+      // if the scene already has an SVG element, don't draw another one.
+      if ( !window.draw ) {
+        window.draw = SVG('super-container').size('100%', '100%');
+      }
+
+      if ( !window.gradient ) {
+        window.gradient = draw.gradient( 'radial', function( stop ) {
+          stop.at( 0, colors.secondary );
+          stop.at( 1, colors.primary );
+        });
+      } else {
+        window.gradient.update( function( stop ) {
+          stop.at( 0, colors.secondary );
+          stop.at( 1, colors.primary );
+        });
+      }
+
+      if ( window.rect ) {
+        window.rect.fill( window.gradient );
+      } else {
+        window.rect = draw.rect('200%', '200%').attr({
+          fill: window.gradient
+        });
+      }
     },
 
     remove: function() {
