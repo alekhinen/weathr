@@ -3,6 +3,8 @@
 
 Another weather app built with a node + express + backbone + marionette stack.
 
+The site in its most current version can be found at [weathr.nickalekhine.com](http://weathr.nickalekhine.com/).
+
 ## Core Features
 #### Search
 Search for any location on the planet or for your current location.
