@@ -9,7 +9,7 @@ var options = {
 },
 forecast = new Forecast(options);
 
-// GET weather/lat/:lat/lng/:lng
+// GET /weather/lat/:lat/lng/:lng
 router.get('/lat/:lat/lng/:lng', function(req, res) {
   var rp = req.params,
     lat = rp.lat,
@@ -21,6 +21,13 @@ router.get('/lat/:lat/lng/:lng', function(req, res) {
     }
     res.send( data );
   });
+
+});
+
+// GET /weather/location/:location
+router.get( '/location/:location', function( req, res ) {
+
+  res.render('index', { title: 'Weathr' });
 
 });
 

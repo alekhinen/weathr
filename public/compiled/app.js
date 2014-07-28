@@ -13,7 +13,9 @@
   // Once the App starts, start listening to route changes.
   App.on('start', function ( options ) {
     if ( Backbone.history ) {
-      Backbone.history.start();
+      Backbone.history.start({
+        pushState: true
+      });
     }
   });
 
@@ -126,7 +128,7 @@ App.module('WeatherApp',
 
   App.vent.on('submit:location', function( location ) {
     if ( location !== '' ) {
-      Backbone.history.navigate('weather/location/' + location);
+      Backbone.history.navigate('/weather/location/' + location);
       API.weather( location );
     }
   });
@@ -450,7 +452,7 @@ App.module('WeatherApp.Weather.Requests',
   Requests.getWeatherData = function( geo ) {
     var lat   = geo.geometry.location.lat,
       lng     = geo.geometry.location.lng,
-      ajaxURL = 'weather/lat/' + lat + '/lng/' + lng,
+      ajaxURL = '/weather/lat/' + lat + '/lng/' + lng,
       self    = this,
       result;
 
@@ -988,7 +990,7 @@ App.module('WeatherApp.Weather',
         l  = s.attributes.locationURL;
         gL = s.attributes.geoLoc;
         wD = s.attributes.weatherData;
-        Backbone.history.navigate( 'weather/location/' + l );
+        Backbone.history.navigate( '/weather/location/' + l );
         self.showWeather( l, gL, wD );
       });
       forecastsL.on( 'forecasts:switch:weekly', function( v ) {
@@ -1034,7 +1036,7 @@ App.module('WeatherApp.Weather',
         l  = s.attributes.locationURL;
         gL = s.attributes.geoLoc;
         wD = s.attributes.weatherData;
-        Backbone.history.navigate( 'weather/location/' + l );
+        Backbone.history.navigate( '/weather/location/' + l );
         self.showWeather( l, gL, wD );
       });
 
