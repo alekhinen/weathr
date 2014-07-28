@@ -58,7 +58,7 @@ App.module('WeatherApp.Weather.Requests',
   Requests.getWeatherData = function( geo ) {
     var lat   = geo.geometry.location.lat,
       lng     = geo.geometry.location.lng,
-      ajaxURL = 'weather/lat/' + lat + '/lng/' + lng,
+      ajaxURL = '/weather/lat/' + lat + '/lng/' + lng,
       self    = this,
       result;
 

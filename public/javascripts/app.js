@@ -13,7 +13,9 @@
   // Once the App starts, start listening to route changes.
   App.on('start', function ( options ) {
     if ( Backbone.history ) {
-      Backbone.history.start();
+      Backbone.history.start({
+        pushState: true
+      });
     }
   });
 

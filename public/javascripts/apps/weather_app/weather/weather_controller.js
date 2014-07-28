@@ -89,7 +89,7 @@ App.module('WeatherApp.Weather',
         l  = s.attributes.locationURL;
         gL = s.attributes.geoLoc;
         wD = s.attributes.weatherData;
-        Backbone.history.navigate( 'weather/location/' + l );
+        Backbone.history.navigate( '/weather/location/' + l );
         self.showWeather( l, gL, wD );
       });
       forecastsL.on( 'forecasts:switch:weekly', function( v ) {
@@ -135,7 +135,7 @@ App.module('WeatherApp.Weather',
         l  = s.attributes.locationURL;
         gL = s.attributes.geoLoc;
         wD = s.attributes.weatherData;
-        Backbone.history.navigate( 'weather/location/' + l );
+        Backbone.history.navigate( '/weather/location/' + l );
         self.showWeather( l, gL, wD );
       });
 

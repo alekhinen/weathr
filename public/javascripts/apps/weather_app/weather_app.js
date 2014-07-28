@@ -19,7 +19,7 @@ App.module('WeatherApp',
 
   App.vent.on('submit:location', function( location ) {
     if ( location !== '' ) {
-      Backbone.history.navigate('weather/location/' + location);
+      Backbone.history.navigate('/weather/location/' + location);
       API.weather( location );
     }
   });
