@@ -617,3 +617,64 @@ a {
 .cloudy:before { content: "\f12b"; }
 .partly-cloudy-day:before   { content: "\f1bc"; }
 .partly-cloudy-night:before { content: "\f308"; }
+
+// media queries --------------------------------------------------------------
+@media screen and (max-width: 966px) {
+  #super-container {
+    min-width: 0px;
+    min-height: 0px;
+    position: relative;
+  }
+
+  #app {
+    position: relative;
+  }
+
+  .full-screen {
+    position: relative;
+  }
+
+  #top-left {
+    position: relative;
+    top: 10px;
+    margin-right: 20px;
+  }
+
+  #top-right {
+    position: relative;
+    left: 10px;
+    margin-top: 20px;
+    margin-right: 20px;
+    overflow: hidden;
+  }
+
+  #center {
+    margin-top: 50%;
+  }
+
+  #bottom-left {
+    position: relative;
+    margin-top: 50%;
+  }
+
+  svg {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+  }
+
+  #forecasts-layout {
+    width: 100%;
+  }
+
+  #daily-chart, #hourly-chart {
+    display: block;
+    margin: auto;
+  }
+
+  .hourly-forecast-list-container {
+    width: 100%;
+  }
+}
