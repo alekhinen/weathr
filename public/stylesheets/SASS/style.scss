@@ -663,6 +663,11 @@ a {
     bottom: 0px;
     right: 0px;
     left: 0px;
+    height: 100%;
+  }
+
+  .index-form-container {
+    width: 90%;
   }
 
   #forecasts-layout {
@@ -675,6 +680,6 @@ a {
   }
 
   .hourly-forecast-list-container {
-    width: 100%;
+    width: 113%;
   }
 }

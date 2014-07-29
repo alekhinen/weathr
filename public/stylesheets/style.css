@@ -506,11 +506,14 @@ a {
     top: 0px;
     bottom: 0px;
     right: 0px;
-    left: 0px; }
+    left: 0px;
+    height: 100%; }
+  .index-form-container {
+    width: 90%; }
   #forecasts-layout {
     width: 100%; }
   #daily-chart, #hourly-chart {
     display: block;
     margin: auto; }
   .hourly-forecast-list-container {
-    width: 100%; } }
+    width: 113%; } }
