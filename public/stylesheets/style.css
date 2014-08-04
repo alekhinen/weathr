@@ -173,14 +173,14 @@ a {
   padding-bottom: 9px;
   padding-top: 9px; }
 
-.daily-container .date {
+.daily-container .date, .hourly-container .date {
   position: absolute;
   margin-top: 2px; }
-.daily-container .step {
+.daily-container .step, .hourly-container .step {
   position: relative;
   display: block;
   margin: auto; }
-.daily-container .high-low {
+.daily-container .high-low, .hourly-container .high-low {
   position: absolute;
   right: 21px;
   top: 9px; }
@@ -189,8 +189,9 @@ a {
   width: 442px;
   margin-left: -21px;
   margin-right: -21px;
-  overflow-x: scroll;
-  overflow-y: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  max-height: 300px;
   padding: 0px;
   -webkit-box-shadow: inset 0px 10px 15px -15px rgba(0, 0, 0, 0.75);
   box-shadow: inset 0px 10px 15px -15px rgba(0, 0, 0, 0.75); }
@@ -208,39 +209,8 @@ a {
   background-color: rgba(255, 255, 255, 0.75); }
 
 #hourly-forecast-list {
-  overflow-y: hidden;
-  height: 60px;
-  width: 6000px;
-  margin: 0px; }
-  #hourly-forecast-list li {
-    display: block;
-    height: 100%;
-    width: 125px;
-    float: left; }
-
-.hourly-container {
-  font-size: 12px;
   width: 100%;
-  text-align: center;
-  position: relative; }
-  .hourly-container .date {
-    font-size: 12px;
-    width: 100%;
-    text-align: center;
-    position: relative; }
-  .hourly-container .step {
-    position: relative;
-    display: block;
-    margin: auto;
-    float: left;
-    font-size: 30px; }
-  .hourly-container .high-low {
-    position: relative;
-    width: 100%;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: right;
-    padding-top: 4px; }
+  margin-left: 0px; }
 
 #current-weather {
   position: relative; }
@@ -516,4 +486,4 @@ a {
     display: block;
     margin: auto; }
   .hourly-forecast-list-container {
-    width: 113%; } }
+    width: 100%; } }
