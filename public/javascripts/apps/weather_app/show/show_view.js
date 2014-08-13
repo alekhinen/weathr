@@ -25,7 +25,7 @@ App.module('WeatherApp.Show', function (Show, App, Backbone, Marionette, $, _) {
     initialize: function() {
       console.log( 'Initializing WeatherApp\'s index page.' );
       this.renderGradient();
-      $('body').on('mousemove', this.updateGradient);
+      // $('body').on('mousemove', this.updateGradient);
     },
 
     renderGradient: function() {
