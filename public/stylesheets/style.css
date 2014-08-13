@@ -449,8 +449,8 @@ a {
 
 @media screen and (max-width: 966px) {
   #super-container {
-    min-width: 0px;
-    min-height: 0px;
+    min-width: 100%;
+    min-height: 100%;
     position: relative; }
   #app {
     position: relative; }
