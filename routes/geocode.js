@@ -2,9 +2,10 @@ var express = require('express');
 var router  = express.Router();
 var config  = require('../config');
 var https   = require('https');
+var cors    = require('cors');
 
 // GET /geocode/location ------------------------------------------------------
-router.get('/location/:location', function( req, res ) {
+router.get('/location/:location', cors(), function( req, res ) {
 
   var addy  = req.params.location,
     apiPath = '/maps/api/geocode/json?address=' + addy;
@@ -36,7 +37,7 @@ router.get('/location/:location', function( req, res ) {
 });
 
 // GET /geocode/lat/:lat/lng/:lng ---------------------------------------------
-router.get('/lat/:lat/lng/:lng', function( req, res ) {
+router.get('/lat/:lat/lng/:lng', cors(), function( req, res ) {
   var apiPath, options, locReq, data,
     rp = req.params;
 
